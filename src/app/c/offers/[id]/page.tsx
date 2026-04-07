@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireRole } from "@/lib/auth";
 import { Card, Badge, Avatar } from "@/components/ui";
+import { getOfferImage, getBusinessImages } from "@/lib/business-images";
+import ImageSlider from "@/components/ui/ImageSlider";
 import { MapPin, Calendar, FileText, Camera, Shield } from "lucide-react";
 import { notFound } from "next/navigation";
 import CreateKnotButton from "./CreateKnotButton";
@@ -32,9 +34,44 @@ export default async function OfferDetailPage({ params }: Props) {
 
   const hasApplied = !!existingApp;
 
+  const businessName = offer.business?.business_name ?? "";
+  const offerImage = getOfferImage(businessName, offer.title);
+  const imageSet = getBusinessImages(businessName);
+
   return (
-    <div className="px-4 py-6 space-y-4">
+    <div className="min-h-dvh bg-[#EDE8E2]">
+      {/* Hero image */}
+      {imageSet ? (
+        <div className="relative">
+          <ImageSlider
+            images={imageSet.hero}
+            alt={businessName}
+            aspectRatio="aspect-[4/3]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 p-5 pointer-events-none">
+            <p className="text-sm text-white/70 font-medium">{businessName}</p>
+            <h1 className="text-2xl font-serif font-medium text-white mt-0.5">
+              {offer.title}
+            </h1>
+          </div>
+        </div>
+      ) : offerImage ? (
+        <div className="relative aspect-[4/3] overflow-hidden">
+          <img src={offerImage} alt={offer.title} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-5">
+            <p className="text-sm text-white/70 font-medium">{businessName}</p>
+            <h1 className="text-2xl font-serif font-medium text-white mt-0.5">
+              {offer.title}
+            </h1>
+          </div>
+        </div>
+      ) : null}
+
+      <div className="px-4 py-6 space-y-4">
       {/* Business info */}
+      {!imageSet && !offerImage && (
       <Card className="space-y-4">
         <div className="flex items-start gap-3">
           <Avatar
@@ -57,6 +94,7 @@ export default async function OfferDetailPage({ params }: Props) {
 
         {offer.category && <Badge variant="secondary">{offer.category}</Badge>}
       </Card>
+      )}
 
       {/* Details */}
       <Card className="space-y-4">
@@ -128,6 +166,7 @@ export default async function OfferDetailPage({ params }: Props) {
         hasApplied={hasApplied}
         applicationStatus={existingApp?.status ?? null}
       />
+      </div>
     </div>
   );
 }

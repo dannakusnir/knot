@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireRole } from "@/lib/auth";
 import { EmptyState } from "@/components/ui";
+import { getBusinessImages, getOfferImage } from "@/lib/business-images";
+import ImageSlider from "@/components/ui/ImageSlider";
 import { MapPin, Briefcase, Megaphone, ChevronRight, Star } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -95,26 +97,28 @@ export default async function ExplorePage() {
               key={biz.id}
               className="rounded-[1.5rem] overflow-hidden bg-white"
             >
-              {/* Business hero image */}
-              <div className="relative aspect-[3/2] overflow-hidden">
-                {biz.logo_url ? (
-                  <Image
-                    src={biz.logo_url}
-                    alt={biz.business_name}
-                    width={800}
-                    height={533}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-[#E8E3DD] flex items-center justify-center">
-                    <Megaphone className="h-10 w-10 text-[#C4BBB2]" />
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+              {/* Business hero image slider */}
+              <div className="relative">
+                {(() => {
+                  const imageSet = getBusinessImages(biz.business_name);
+                  const images = imageSet?.hero || (biz.logo_url ? [biz.logo_url] : []);
+
+                  return images.length > 0 ? (
+                    <ImageSlider
+                      images={images}
+                      alt={biz.business_name}
+                    />
+                  ) : (
+                    <div className="aspect-[3/2] bg-[#E8E3DD] flex items-center justify-center">
+                      <Megaphone className="h-10 w-10 text-[#C4BBB2]" />
+                    </div>
+                  );
+                })()}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
 
                 {/* Category pill */}
                 {biz.category && (
-                  <div className="absolute top-3 left-3">
+                  <div className="absolute top-3 left-3 z-10">
                     <span className="px-3 py-1 rounded-full bg-white/90 text-[#3D3229] text-xs font-semibold">
                       {biz.category}
                     </span>
@@ -122,7 +126,7 @@ export default async function ExplorePage() {
                 )}
 
                 {/* Business info on image */}
-                <div className="absolute bottom-0 left-0 right-0 p-4">
+                <div className="absolute bottom-0 left-0 right-0 p-4 z-10 pointer-events-none">
                   <h2 className="text-2xl font-serif font-medium text-white leading-tight">
                     {biz.business_name}
                   </h2>
@@ -148,12 +152,26 @@ export default async function ExplorePage() {
                 <p className="text-[11px] text-[#CB997E] uppercase tracking-[0.15em] font-semibold mb-1">
                   {biz.offers.length} offer{biz.offers.length !== 1 ? "s" : ""} available
                 </p>
-                {biz.offers.map((offer) => (
+                {biz.offers.map((offer) => {
+                  const offerImg = getOfferImage(biz.business_name, offer.title);
+                  return (
                   <Link key={offer.id} href={`/c/offers/${offer.id}`}>
                     <div className="flex items-center gap-3 rounded-2xl bg-[#F7F4F0] px-4 py-3.5 active:scale-[0.98] transition-transform">
-                      <div className="w-9 h-9 rounded-full bg-[#A5A58D]/15 flex items-center justify-center shrink-0">
-                        <Megaphone className="h-4 w-4 text-[#A5A58D]" />
-                      </div>
+                      {offerImg ? (
+                        <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0">
+                          <Image
+                            src={offerImg}
+                            alt={offer.title}
+                            width={80}
+                            height={80}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-9 h-9 rounded-full bg-[#A5A58D]/15 flex items-center justify-center shrink-0">
+                          <Megaphone className="h-4 w-4 text-[#A5A58D]" />
+                        </div>
+                      )}
                       <div className="flex-1 min-w-0">
                         <p className="text-[15px] font-semibold text-[#3D3229] truncate">
                           {offer.title}
@@ -175,7 +193,8 @@ export default async function ExplorePage() {
                       <ChevronRight className="h-4 w-4 text-[#C4BBB2] shrink-0" />
                     </div>
                   </Link>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}

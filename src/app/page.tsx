@@ -58,8 +58,8 @@ export default function HomePage() {
         <div className="max-w-lg mx-auto grid grid-cols-3 gap-2.5">
           <div className="rounded-[1.75rem] overflow-hidden aspect-[3/4]">
             <Image
-              src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=500&h=666&fit=crop&crop=center"
-              alt="Cafe"
+              src="/images/mami/TUBEAV-8-14-27.jpg"
+              alt="Mami Cresskill"
               width={500}
               height={666}
               className="w-full h-full object-cover"
@@ -67,8 +67,8 @@ export default function HomePage() {
           </div>
           <div className="rounded-[1.75rem] overflow-hidden aspect-[3/4]">
             <Image
-              src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&h=666&fit=crop"
-              alt="Food"
+              src="/images/shawarma/0V8A0553.jpg"
+              alt="Shawarma Delight"
               width={500}
               height={666}
               className="w-full h-full object-cover"
@@ -76,8 +76,8 @@ export default function HomePage() {
           </div>
           <div className="rounded-[1.75rem] overflow-hidden aspect-[3/4]">
             <Image
-              src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=500&h=666&fit=crop"
-              alt="Spa"
+              src="/images/livela/0V8A0885.jpg"
+              alt="Livela Beauty"
               width={500}
               height={666}
               className="w-full h-full object-cover"
@@ -137,8 +137,8 @@ export default function HomePage() {
       <section className="px-4 py-6">
         <div className="max-w-lg mx-auto rounded-[1.75rem] overflow-hidden aspect-[16/10]">
           <Image
-            src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=1200&h=750&fit=crop"
-            alt="Restaurant table"
+            src="/images/mami/Mami-vibes-9-28-25-69.jpg"
+            alt="Mami Cresskill food spread"
             width={1200}
             height={750}
             className="w-full h-full object-cover"
@@ -166,8 +166,8 @@ export default function HomePage() {
           <div className="rounded-[1.75rem] overflow-hidden bg-[#F7F4F0]">
             <div className="aspect-[1/1] overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500&h=500&fit=crop"
-                alt="Restaurant"
+                src="/images/shawarma/0V8A0364.jpg"
+                alt="Shawarma Delight interior"
                 width={500}
                 height={500}
                 className="w-full h-full object-cover"
@@ -186,8 +186,8 @@ export default function HomePage() {
           <div className="rounded-[1.75rem] overflow-hidden bg-[#F7F4F0]">
             <div className="aspect-[1/1] overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=500&fit=crop&crop=face"
-                alt="Creator"
+                src="/images/livela/0V8A0874.jpg"
+                alt="Livela Spa"
                 width={500}
                 height={500}
                 className="w-full h-full object-cover"
