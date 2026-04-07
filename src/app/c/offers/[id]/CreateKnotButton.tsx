@@ -54,7 +54,7 @@ export default function CreateKnotButton({
     }
 
     setCelebrate(true);
-    setTimeout(() => router.refresh(), 2500);
+    setTimeout(() => router.refresh(), 1800);
   }
 
   if (hasApplied) {
@@ -74,8 +74,7 @@ export default function CreateKnotButton({
         <Celebration
           trigger={celebrate}
           title="Application Sent!"
-          subtitle="Fingers crossed 🤞"
-          emoji="🚀"
+          subtitle="Fingers crossed!"
         />
         <Button onClick={() => setShowForm(true)} className="w-full" size="lg">
           Create Knot

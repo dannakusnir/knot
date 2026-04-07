@@ -43,7 +43,7 @@ export default function BusinessKnotActions({
     }
 
     setCelebrate(true);
-    setTimeout(() => setShowRating(true), 2000);
+    setTimeout(() => setShowRating(true), 1500);
   }
 
   async function handleRequestRevision() {
@@ -74,7 +74,6 @@ export default function BusinessKnotActions({
         trigger={celebrate}
         title="Knot Complete!"
         subtitle={`Great collab with ${creatorName}!`}
-        emoji="🎉"
       />
       <Card className="space-y-4">
         <h2 className="text-sm font-medium">Review Proof</h2>
