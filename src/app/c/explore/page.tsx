@@ -78,7 +78,7 @@ export default async function ExplorePage() {
           Discover
         </h1>
         <p className="text-base text-[#8A8078] mt-1">
-          Local businesses looking for creators
+          Local businesses looking for you ✨
         </p>
       </div>
 

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button, Card, Textarea } from "@/components/ui";
 import { useToast } from "@/components/ui/Toast";
 import RatingModal from "@/components/knots/RatingModal";
+import Celebration from "@/components/ui/Celebration";
 
 interface BusinessKnotActionsProps {
   knotId: string;
@@ -22,6 +23,7 @@ export default function BusinessKnotActions({
   const [showRevisionForm, setShowRevisionForm] = useState(false);
   const [revisionNotes, setRevisionNotes] = useState("");
   const [showRating, setShowRating] = useState(false);
+  const [celebrate, setCelebrate] = useState(false);
   const router = useRouter();
   const supabase = createClient();
   const { toast } = useToast();
@@ -40,8 +42,8 @@ export default function BusinessKnotActions({
       return;
     }
 
-    toast("success", "Knot completed!");
-    setShowRating(true);
+    setCelebrate(true);
+    setTimeout(() => setShowRating(true), 2000);
   }
 
   async function handleRequestRevision() {
@@ -68,6 +70,12 @@ export default function BusinessKnotActions({
 
   return (
     <>
+      <Celebration
+        trigger={celebrate}
+        title="Knot Complete!"
+        subtitle={`Great collab with ${creatorName}!`}
+        emoji="🎉"
+      />
       <Card className="space-y-4">
         <h2 className="text-sm font-medium">Review Proof</h2>
 

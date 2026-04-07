@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Button, Card, Textarea, Badge } from "@/components/ui";
 import { useToast } from "@/components/ui/Toast";
+import Celebration from "@/components/ui/Celebration";
 import { APPLICATION_STATUSES } from "@/lib/constants";
 import type { ApplicationStatus } from "@/types";
 
@@ -22,6 +23,7 @@ export default function CreateKnotButton({
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [celebrate, setCelebrate] = useState(false);
   const router = useRouter();
   const supabase = createClient();
   const { toast } = useToast();
@@ -51,8 +53,8 @@ export default function CreateKnotButton({
       return;
     }
 
-    toast("success", "Application sent!");
-    router.refresh();
+    setCelebrate(true);
+    setTimeout(() => router.refresh(), 2500);
   }
 
   if (hasApplied) {
@@ -68,13 +70,28 @@ export default function CreateKnotButton({
 
   if (!showForm) {
     return (
-      <Button onClick={() => setShowForm(true)} className="w-full" size="lg">
-        Create Knot
-      </Button>
+      <>
+        <Celebration
+          trigger={celebrate}
+          title="Application Sent!"
+          subtitle="Fingers crossed 🤞"
+          emoji="🚀"
+        />
+        <Button onClick={() => setShowForm(true)} className="w-full" size="lg">
+          Create Knot
+        </Button>
+      </>
     );
   }
 
   return (
+    <>
+    <Celebration
+      trigger={celebrate}
+      title="Application Sent!"
+      subtitle="Fingers crossed 🤞"
+      emoji="🚀"
+    />
     <Card className="space-y-4">
       <h3 className="text-sm font-medium">Create Knot</h3>
       <Textarea
@@ -97,5 +114,6 @@ export default function CreateKnotButton({
         </Button>
       </div>
     </Card>
+    </>
   );
 }
