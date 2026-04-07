@@ -10,11 +10,15 @@ const businessImages: Record<string, BusinessImageSet> = {
   "mami": {
     hero: [
       "/images/mami/TUBEAV-8-14-27.jpg",       // restaurant interior
+      "/images/mami/0V8A4710.jpg",              // coffee & pastries spread
       "/images/mami/Mami-vibes-9-28-25-69.jpg", // food spread
+      "/images/mami/0V8A9601.jpg",              // wrap plate
+      "/images/mami/0V8A4757.jpg",              // croissant & coffee
     ],
     offerImages: {
-      "coffee":  "/images/mami/Mami-vibes-9-28-25-69.jpg",
-      "lunch":   "/images/mami/Mami-vibes-9-28-25-69.jpg",
+      "coffee":  "/images/mami/0V8A4710.jpg",
+      "pastry":  "/images/mami/0V8A4757.jpg",
+      "lunch":   "/images/mami/0V8A9601.jpg",
       "brunch":  "/images/mami/Mami-vibes-9-28-25-69.jpg",
       "dinner":  "/images/mami/TUBEAV-8-14-27.jpg",
       "default": "/images/mami/TUBEAV-8-14-27.jpg",
@@ -38,14 +42,16 @@ const businessImages: Record<string, BusinessImageSet> = {
   "livela": {
     hero: [
       "/images/livela/0V8A0885.jpg", // logo wall
+      "/images/livela/0V8A1568.jpg", // gold mask facial
+      "/images/livela/0V8A3289.jpg", // brow treatment
+      "/images/livela/0V8A3711.jpg", // laser treatment
       "/images/livela/0V8A0874.jpg", // spa headband
-      "/images/livela/0V8A0875.jpg", // robe
     ],
     offerImages: {
-      "brows":   "/images/livela/0V8A0874.jpg",
+      "brows":   "/images/livela/0V8A3289.jpg",
       "nails":   "/images/livela/0V8A0874.jpg",
-      "facial":  "/images/livela/0V8A0875.jpg",
-      "laser":   "/images/livela/0V8A0885.jpg",
+      "facial":  "/images/livela/0V8A1568.jpg",
+      "laser":   "/images/livela/0V8A3711.jpg",
       "default": "/images/livela/0V8A0885.jpg",
     },
   },

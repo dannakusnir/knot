@@ -58,8 +58,8 @@ export default function HomePage() {
         <div className="max-w-lg mx-auto grid grid-cols-3 gap-2.5">
           <div className="rounded-[1.75rem] overflow-hidden aspect-[3/4]">
             <Image
-              src="/images/mami/TUBEAV-8-14-27.jpg"
-              alt="Mami Cresskill"
+              src="/images/mami/0V8A4757.jpg"
+              alt="Mami Cresskill — croissant & coffee"
               width={500}
               height={666}
               className="w-full h-full object-cover"
@@ -67,17 +67,17 @@ export default function HomePage() {
           </div>
           <div className="rounded-[1.75rem] overflow-hidden aspect-[3/4]">
             <Image
-              src="/images/shawarma/0V8A0553.jpg"
-              alt="Shawarma Delight"
+              src="/images/shawarma/0V8A0364.jpg"
+              alt="Shawarma Delight interior"
               width={500}
               height={666}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-center"
             />
           </div>
           <div className="rounded-[1.75rem] overflow-hidden aspect-[3/4]">
             <Image
-              src="/images/livela/0V8A0885.jpg"
-              alt="Livela Beauty"
+              src="/images/livela/0V8A3711.jpg"
+              alt="Livela Beauty — laser treatment"
               width={500}
               height={666}
               className="w-full h-full object-cover"
@@ -137,11 +137,11 @@ export default function HomePage() {
       <section className="px-4 py-6">
         <div className="max-w-lg mx-auto rounded-[1.75rem] overflow-hidden aspect-[16/10]">
           <Image
-            src="/images/mami/Mami-vibes-9-28-25-69.jpg"
-            alt="Mami Cresskill food spread"
+            src="/images/mami/0V8A4710.jpg"
+            alt="Mami Cresskill — coffee & pastries"
             width={1200}
             height={750}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
         </div>
       </section>
@@ -166,11 +166,11 @@ export default function HomePage() {
           <div className="rounded-[1.75rem] overflow-hidden bg-[#F7F4F0]">
             <div className="aspect-[1/1] overflow-hidden">
               <Image
-                src="/images/shawarma/0V8A0364.jpg"
-                alt="Shawarma Delight interior"
+                src="/images/shawarma/0V8A0359.jpg"
+                alt="Shawarma Delight"
                 width={500}
                 height={500}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center"
               />
             </div>
             <div className="p-5">
@@ -186,11 +186,11 @@ export default function HomePage() {
           <div className="rounded-[1.75rem] overflow-hidden bg-[#F7F4F0]">
             <div className="aspect-[1/1] overflow-hidden">
               <Image
-                src="/images/livela/0V8A0874.jpg"
-                alt="Livela Spa"
+                src="/images/livela/0V8A3289.jpg"
+                alt="Livela Beauty — brow treatment"
                 width={500}
                 height={500}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-top"
               />
             </div>
             <div className="p-5">
