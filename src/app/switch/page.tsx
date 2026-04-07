@@ -112,11 +112,11 @@ export default function SwitchAccountPage() {
     return Shield;
   };
 
-  const roleColor = (role: string) => {
+  function roleColor(role: string): "primary" | "warning" | "info" {
     if (role === "creator") return "primary";
     if (role === "business") return "warning";
     return "info";
-  } as (role: string) => "primary" | "warning" | "info";
+  }
 
   const creators = accounts.filter((a) => a.role === "creator");
   const businesses = accounts.filter((a) => a.role === "business");
