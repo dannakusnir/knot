@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root {
+  --background: #EDE8E2;
+  --foreground: #4A4540;
+  --card: #F7F4F0;
+  --primary: #A5A58D;
+  --primary-hover: #8E8E78;
+  --secondary: #DDBEA9;
+  --secondary-hover: #CB997E;
+  --muted: #E8E3DD;
+  --muted-foreground: #A09890;
+  --border: #DDD7D0;
+  --destructive: #C7544A;
+  --success: #6B705C;
+  --warning: #CB997E;
+  --info: #80939D;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --font-sans: var(--font-quicksand);
+  --font-serif: var(--font-lora);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif), Georgia, serif;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
