@@ -12,15 +12,22 @@ const creatorTabs = [
   { label: "Profile", href: "/c/profile", icon: User },
 ];
 
+interface CreatorShellProps {
+  children: React.ReactNode;
+  notificationCount?: number;
+}
+
 export default function CreatorShell({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  notificationCount = 0,
+}: CreatorShellProps) {
   return (
     <ToastProvider>
       <div className="min-h-dvh bg-background">
-        <Header />
+        <Header
+          notificationCount={notificationCount}
+          notificationHref="/c/notifications"
+        />
         <main className="pb-20">{children}</main>
         <BottomNav tabs={creatorTabs} />
       </div>

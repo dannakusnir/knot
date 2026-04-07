@@ -12,15 +12,22 @@ const businessTabs = [
   { label: "Profile", href: "/b/profile", icon: User },
 ];
 
+interface BusinessShellProps {
+  children: React.ReactNode;
+  notificationCount?: number;
+}
+
 export default function BusinessShell({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  notificationCount = 0,
+}: BusinessShellProps) {
   return (
     <ToastProvider>
       <div className="min-h-dvh bg-background">
-        <Header />
+        <Header
+          notificationCount={notificationCount}
+          notificationHref="/b/notifications"
+        />
         <main className="pb-20">{children}</main>
         <BottomNav tabs={businessTabs} />
       </div>

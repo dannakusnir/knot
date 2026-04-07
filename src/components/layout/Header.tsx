@@ -6,14 +6,18 @@ import Link from "next/link";
 
 interface HeaderProps {
   notificationCount?: number;
+  notificationHref?: string;
 }
 
-export default function Header({ notificationCount = 0 }: HeaderProps) {
+export default function Header({
+  notificationCount = 0,
+  notificationHref = "/c/notifications",
+}: HeaderProps) {
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-5 bg-[#EDE8E2]/95 backdrop-blur-sm border-b border-[#DDD7D0]/50">
       <KnotLogo size="sm" />
       <Link
-        href="/switch"
+        href={notificationHref}
         className="relative rounded-full p-2 hover:bg-[#E8E3DD] transition-colors"
       >
         <Bell className="h-5 w-5 text-[#6B705C]" />
