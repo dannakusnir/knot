@@ -19,7 +19,7 @@ export default function BottomNav({ tabs }: BottomNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-card/95 backdrop-blur-sm pb-safe">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-[#DDD7D0] bg-white/95 backdrop-blur-sm pb-safe">
       <div className="flex items-center justify-around h-16 max-w-lg mx-auto">
         {tabs.map((tab) => {
           const isActive =
@@ -33,14 +33,14 @@ export default function BottomNav({ tabs }: BottomNavProps) {
               className={cn(
                 "flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors",
                 isActive
-                  ? "text-primary-hover"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "text-[#6B705C]"
+                  : "text-[#B5ADA5] hover:text-[#8A8078]"
               )}
             >
               <Icon
                 className={cn("h-5 w-5", isActive && "stroke-[2.5]")}
               />
-              <span className="text-[10px] font-medium">{tab.label}</span>
+              <span className="text-[11px] font-semibold">{tab.label}</span>
             </Link>
           );
         })}
