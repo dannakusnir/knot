@@ -88,8 +88,7 @@ export default function CreateKnotButton({
     <Celebration
       trigger={celebrate}
       title="Application Sent!"
-      subtitle="Fingers crossed 🤞"
-      emoji="🚀"
+      subtitle="Fingers crossed!"
     />
     <Card className="space-y-4">
       <h3 className="text-sm font-medium">Create Knot</h3>
