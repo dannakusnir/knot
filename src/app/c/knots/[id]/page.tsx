@@ -5,6 +5,7 @@ import { KNOT_STATUSES } from "@/lib/constants";
 import { notFound } from "next/navigation";
 import KnotTimeline from "@/components/knots/KnotTimeline";
 import ProofUpload from "@/components/knots/ProofUpload";
+import KnotChat from "@/components/chat/KnotChat";
 import type { KnotStatus } from "@/types";
 
 interface Props {
@@ -117,6 +118,15 @@ export default async function CreatorKnotDetailPage({ params }: Props) {
       {/* Upload proof */}
       {canUploadProof && (
         <ProofUpload knotId={knot.id} existingProofs={knot.proof_urls ?? []} />
+      )}
+
+      {/* Chat */}
+      {knot.status !== "cancelled" && (
+        <KnotChat
+          knotId={knot.id}
+          currentUserId={user.id}
+          otherName={knot.business?.business_name ?? "Business"}
+        />
       )}
     </div>
   );

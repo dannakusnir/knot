@@ -5,6 +5,7 @@ import { KNOT_STATUSES } from "@/lib/constants";
 import { notFound } from "next/navigation";
 import KnotTimeline from "@/components/knots/KnotTimeline";
 import BusinessKnotActions from "./BusinessKnotActions";
+import KnotChat from "@/components/chat/KnotChat";
 import type { KnotStatus } from "@/types";
 
 interface Props {
@@ -94,6 +95,15 @@ export default async function BusinessKnotDetailPage({ params }: Props) {
           knotId={knot.id}
           creatorId={knot.creator_id}
           creatorName={knot.creator?.profile?.full_name ?? "Creator"}
+        />
+      )}
+
+      {/* Chat */}
+      {knot.status !== "cancelled" && (
+        <KnotChat
+          knotId={knot.id}
+          currentUserId={user.id}
+          otherName={knot.creator?.profile?.full_name ?? "Creator"}
         />
       )}
     </div>
