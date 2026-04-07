@@ -20,7 +20,7 @@ export default function LoginPage() {
     setLoading(true);
 
     const { error } = await supabase.auth.signInWithPassword({
-      email,
+      email: email.trim(),
       password,
     });
 
@@ -35,12 +35,14 @@ export default function LoginPage() {
 
   return (
     <div className="space-y-8">
-      <div className="text-center space-y-2">
-        <div className="flex justify-center mb-6">
+      <div className="text-center space-y-3">
+        <div className="flex justify-center mb-8">
           <KnotLogo size="lg" />
         </div>
-        <h1 className="text-2xl font-serif font-semibold">Welcome back</h1>
-        <p className="text-sm text-muted-foreground">
+        <h1 className="text-3xl font-serif font-medium text-[#3D3229]">
+          Welcome back
+        </h1>
+        <p className="text-base text-[#8A8078]">
           Sign in to manage your collaborations
         </p>
       </div>
@@ -64,7 +66,9 @@ export default function LoginPage() {
         />
 
         {error && (
-          <p className="text-sm text-destructive text-center">{error}</p>
+          <div className="rounded-xl bg-[#E07A5F]/10 px-4 py-3">
+            <p className="text-sm text-[#E07A5F] text-center">{error}</p>
+          </div>
         )}
 
         <Button type="submit" loading={loading} className="w-full" size="lg">
@@ -72,9 +76,9 @@ export default function LoginPage() {
         </Button>
       </form>
 
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="text-center text-sm text-[#8A8078]">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="text-primary-hover font-medium">
+        <Link href="/signup" className="text-[#6B705C] font-semibold hover:underline">
           Sign up
         </Link>
       </p>

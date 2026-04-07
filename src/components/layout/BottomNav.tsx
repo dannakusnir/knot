@@ -31,16 +31,26 @@ export default function BottomNav({ tabs }: BottomNavProps) {
               key={tab.href}
               href={tab.href}
               className={cn(
-                "flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors",
+                "flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-2xl transition-all",
                 isActive
-                  ? "text-[#6B705C]"
+                  ? "text-[#6B705C] bg-[#A5A58D]/12"
                   : "text-[#B5ADA5] hover:text-[#8A8078]"
               )}
             >
               <Icon
-                className={cn("h-5 w-5", isActive && "stroke-[2.5]")}
+                className={cn(
+                  "h-5 w-5 transition-transform",
+                  isActive && "stroke-[2.5] scale-110"
+                )}
               />
-              <span className="text-[11px] font-semibold">{tab.label}</span>
+              <span
+                className={cn(
+                  "text-[11px] font-semibold transition-all",
+                  isActive && "text-[#6B705C]"
+                )}
+              >
+                {tab.label}
+              </span>
             </Link>
           );
         })}

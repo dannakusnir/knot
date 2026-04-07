@@ -4,10 +4,9 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Button, Input, KnotLogo } from "@/components/ui";
-import { Users, Briefcase } from "lucide-react";
+import { Users, Briefcase, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import type { UserRole } from "@/types";
-import { cn } from "@/lib/utils";
 
 export default function SignupPage() {
   const [step, setStep] = useState<"role" | "details">("role");
@@ -27,7 +26,7 @@ export default function SignupPage() {
     setLoading(true);
 
     const { data, error: signUpError } = await supabase.auth.signUp({
-      email,
+      email: email.trim(),
       password,
       options: {
         data: {
@@ -44,27 +43,23 @@ export default function SignupPage() {
     }
 
     if (data.user) {
-      // If email confirmation is required, user won't be fully authenticated yet
       if (data.user.identities?.length === 0) {
         setError("This email is already registered. Try signing in.");
         setLoading(false);
         return;
       }
 
-      // Create profile
       const { error: profileError } = await supabase.from("profiles").insert({
         id: data.user.id,
         role,
         full_name: name,
-        email,
+        email: email.trim(),
       });
 
       if (profileError) {
-        // Profile might already exist if user re-signed up
         console.log("Profile insert:", profileError.message);
       }
 
-      // Redirect to onboarding
       router.push(`/onboarding/${role}`);
       router.refresh();
     } else {
@@ -76,12 +71,14 @@ export default function SignupPage() {
   if (step === "role") {
     return (
       <div className="space-y-8">
-        <div className="text-center space-y-2">
-          <div className="flex justify-center mb-6">
+        <div className="text-center space-y-3">
+          <div className="flex justify-center mb-8">
             <KnotLogo size="lg" />
           </div>
-          <h1 className="text-2xl font-serif font-semibold">Join KNOT</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="text-3xl font-serif font-medium text-[#3D3229]">
+            Join KNOT
+          </h1>
+          <p className="text-base text-[#8A8078]">
             How would you like to use KNOT?
           </p>
         </div>
@@ -92,17 +89,14 @@ export default function SignupPage() {
               setRole("creator");
               setStep("details");
             }}
-            className={cn(
-              "w-full flex items-center gap-4 rounded-2xl border-2 p-5 text-left transition-all",
-              "border-border hover:border-primary hover:bg-primary/5"
-            )}
+            className="w-full flex items-center gap-4 rounded-2xl border-2 border-[#E8E3DD] p-5 text-left transition-all hover:border-[#A5A58D] hover:bg-[#A5A58D]/5 active:scale-[0.98]"
           >
-            <div className="rounded-xl bg-primary/15 p-3">
-              <Users className="h-6 w-6 text-primary-hover" />
+            <div className="rounded-xl bg-[#7FC8A9]/15 p-3">
+              <Users className="h-6 w-6 text-[#5BA88A]" />
             </div>
             <div>
-              <p className="font-semibold">I&apos;m a Creator</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="font-semibold text-[#3D3229]">I&apos;m a Creator</p>
+              <p className="text-sm text-[#8A8078]">
                 I create content for local businesses
               </p>
             </div>
@@ -113,26 +107,23 @@ export default function SignupPage() {
               setRole("business");
               setStep("details");
             }}
-            className={cn(
-              "w-full flex items-center gap-4 rounded-2xl border-2 p-5 text-left transition-all",
-              "border-border hover:border-primary hover:bg-primary/5"
-            )}
+            className="w-full flex items-center gap-4 rounded-2xl border-2 border-[#E8E3DD] p-5 text-left transition-all hover:border-[#CB997E] hover:bg-[#CB997E]/5 active:scale-[0.98]"
           >
-            <div className="rounded-xl bg-secondary/50 p-3">
-              <Briefcase className="h-6 w-6 text-foreground" />
+            <div className="rounded-xl bg-[#DDBEA9]/25 p-3">
+              <Briefcase className="h-6 w-6 text-[#CB997E]" />
             </div>
             <div>
-              <p className="font-semibold">I&apos;m a Business</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="font-semibold text-[#3D3229]">I&apos;m a Business</p>
+              <p className="text-sm text-[#8A8078]">
                 I want creators to make content for my business
               </p>
             </div>
           </button>
         </div>
 
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="text-center text-sm text-[#8A8078]">
           Already have an account?{" "}
-          <Link href="/login" className="text-primary-hover font-medium">
+          <Link href="/login" className="text-[#6B705C] font-semibold hover:underline">
             Sign in
           </Link>
         </p>
@@ -142,16 +133,23 @@ export default function SignupPage() {
 
   return (
     <div className="space-y-8">
-      <div className="text-center space-y-2">
-        <div className="flex justify-center mb-6">
+      <div className="text-center space-y-3">
+        <div className="flex justify-center mb-8">
           <KnotLogo size="lg" />
         </div>
-        <h1 className="text-2xl font-serif font-semibold">
-          {role === "creator" ? "Creator" : "Business"} Sign Up
+        <div className="inline-flex items-center gap-2 rounded-full bg-[#A5A58D]/12 px-4 py-1.5 mb-2">
+          {role === "creator" ? (
+            <Users className="h-4 w-4 text-[#5BA88A]" />
+          ) : (
+            <Briefcase className="h-4 w-4 text-[#CB997E]" />
+          )}
+          <span className="text-sm font-medium text-[#3D3229]">
+            {role === "creator" ? "Creator" : "Business"}
+          </span>
+        </div>
+        <h1 className="text-3xl font-serif font-medium text-[#3D3229]">
+          Create your account
         </h1>
-        <p className="text-sm text-muted-foreground">
-          Create your account to get started
-        </p>
       </div>
 
       <form onSubmit={handleSignup} className="space-y-4">
@@ -183,7 +181,9 @@ export default function SignupPage() {
         />
 
         {error && (
-          <p className="text-sm text-destructive text-center">{error}</p>
+          <div className="rounded-xl bg-[#E07A5F]/10 px-4 py-3">
+            <p className="text-sm text-[#E07A5F] text-center">{error}</p>
+          </div>
         )}
 
         <Button type="submit" loading={loading} className="w-full" size="lg">
@@ -193,8 +193,9 @@ export default function SignupPage() {
 
       <button
         onClick={() => setStep("role")}
-        className="block w-full text-center text-sm text-muted-foreground hover:text-foreground"
+        className="flex items-center gap-2 mx-auto text-sm text-[#8A8078] hover:text-[#3D3229] transition-colors"
       >
+        <ArrowLeft className="h-4 w-4" />
         Back to role selection
       </button>
     </div>

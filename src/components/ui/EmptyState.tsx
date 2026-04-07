@@ -27,11 +27,11 @@ export default function EmptyState({
         className
       )}
     >
-      <div className="rounded-full bg-muted p-4 mb-4">
-        <Icon className="h-8 w-8 text-muted-foreground" />
+      <div className="rounded-full bg-[#DDBEA9]/20 p-4 mb-4">
+        <Icon className="h-8 w-8 text-[#CB997E]" />
       </div>
-      <h3 className="text-lg font-semibold font-serif mb-1">{title}</h3>
-      <p className="text-sm text-muted-foreground max-w-xs mb-4">
+      <h3 className="text-lg font-semibold font-serif text-[#3D3229] mb-1">{title}</h3>
+      <p className="text-sm text-[#8A8078] max-w-xs mb-4">
         {description}
       </p>
       {action && (
