@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Quicksand, Lora } from "next/font/google";
 import "./globals.css";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 const quicksand = Quicksand({
   variable: "--font-quicksand",
@@ -19,6 +20,15 @@ export const metadata: Metadata = {
   title: "KNOT — Collaborations that feel like connections",
   description:
     "A platform for real, trackable collaborations between local businesses and content creators.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "KNOT",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
 };
 
 export const viewport: Viewport = {
@@ -35,7 +45,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${quicksand.variable} ${lora.variable}`}>
-      <body className="min-h-dvh flex flex-col antialiased">{children}</body>
+      <head>
+        <link rel="apple-touch-icon" href="/icon-192.svg" />
+      </head>
+      <body className="min-h-dvh flex flex-col antialiased">
+        {children}
+        <ServiceWorkerRegister />
+      </body>
     </html>
   );
 }
