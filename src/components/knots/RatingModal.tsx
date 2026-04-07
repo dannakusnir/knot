@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Button, Modal, StarRating, Textarea } from "@/components/ui";
+import { useToast } from "@/components/ui/Toast";
 
 interface RatingModalProps {
   open: boolean;
@@ -25,6 +26,7 @@ export default function RatingModal({
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
 
   async function handleSubmit() {
     if (score === 0) return;
@@ -33,7 +35,11 @@ export default function RatingModal({
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      toast("error", "You must be logged in to rate");
+      setLoading(false);
+      return;
+    }
 
     const { error } = await supabase.from("ratings").insert({
       knot_id: knotId,
@@ -44,10 +50,12 @@ export default function RatingModal({
     });
 
     if (error) {
+      toast("error", "Failed to submit rating");
       setLoading(false);
       return;
     }
 
+    toast("success", "Rating submitted!");
     onClose();
     router.refresh();
   }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Button, Select } from "@/components/ui";
+import { useToast } from "@/components/ui/Toast";
 
 interface Creator {
   id: string;
@@ -27,6 +28,7 @@ export default function ManualMatchAction({
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
 
   async function handleMatch() {
     if (!selectedCreator) return;
@@ -45,6 +47,7 @@ export default function ManualMatchAction({
       .single();
 
     if (appError || !app) {
+      toast("error", "Failed to create application");
       setLoading(false);
       return;
     }
@@ -63,10 +66,12 @@ export default function ManualMatchAction({
     });
 
     if (knotError) {
+      toast("error", "Failed to create knot");
       setLoading(false);
       return;
     }
 
+    toast("success", "Creator matched successfully!");
     setSelectedCreator("");
     router.refresh();
   }

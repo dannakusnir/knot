@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Button, Card, Textarea, Badge } from "@/components/ui";
+import { useToast } from "@/components/ui/Toast";
 import { APPLICATION_STATUSES } from "@/lib/constants";
 import type { ApplicationStatus } from "@/types";
 
@@ -23,6 +24,7 @@ export default function CreateKnotButton({
   const [showForm, setShowForm] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
 
   async function handleApply() {
     setLoading(true);
@@ -30,7 +32,11 @@ export default function CreateKnotButton({
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      toast("error", "You must be logged in to apply");
+      setLoading(false);
+      return;
+    }
 
     const { error } = await supabase.from("applications").insert({
       offer_id: offerId,
@@ -40,10 +46,12 @@ export default function CreateKnotButton({
     });
 
     if (error) {
+      toast("error", "Failed to submit application");
       setLoading(false);
       return;
     }
 
+    toast("success", "Application sent!");
     router.refresh();
   }
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Button, Input, Textarea, Card } from "@/components/ui";
+import { useToast } from "@/components/ui/Toast";
 import { Upload, Link as LinkIcon, X } from "lucide-react";
 
 interface ProofUploadProps {
@@ -22,6 +23,7 @@ export default function ProofUpload({
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
 
   function addLink() {
     setProofLinks((prev) => [...prev, ""]);
@@ -41,7 +43,10 @@ export default function ProofUpload({
 
   async function handleSubmit() {
     const validLinks = proofLinks.filter(Boolean);
-    if (validLinks.length === 0) return;
+    if (validLinks.length === 0) {
+      toast("error", "Add at least one proof link");
+      return;
+    }
 
     setLoading(true);
 
@@ -55,10 +60,12 @@ export default function ProofUpload({
       .eq("id", knotId);
 
     if (error) {
+      toast("error", "Failed to submit proof");
       setLoading(false);
       return;
     }
 
+    toast("success", "Proof submitted!");
     router.refresh();
   }
 
@@ -100,7 +107,7 @@ export default function ProofUpload({
       <button
         type="button"
         onClick={addLink}
-        className="text-sm text-primary-hover font-medium flex items-center gap-1"
+        className="text-sm text-primary font-medium flex items-center gap-1"
       >
         <LinkIcon className="h-3.5 w-3.5" />
         Add another link

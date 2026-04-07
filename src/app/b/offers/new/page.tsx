@@ -31,12 +31,27 @@ export default function NewOfferPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+
+    if (!title.trim() || !description.trim() || !deliverables.trim()) {
+      setError("Title, description, and deliverables are required");
+      return;
+    }
+
+    if (deadline && new Date(deadline) < new Date()) {
+      setError("Deadline must be in the future");
+      return;
+    }
+
     setLoading(true);
 
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      setError("You must be logged in");
+      setLoading(false);
+      return;
+    }
 
     const { error: insertError } = await supabase.from("offers").insert({
       business_id: user.id,

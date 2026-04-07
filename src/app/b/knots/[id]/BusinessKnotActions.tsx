@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Button, Card, Textarea } from "@/components/ui";
+import { useToast } from "@/components/ui/Toast";
 import RatingModal from "@/components/knots/RatingModal";
 
 interface BusinessKnotActionsProps {
@@ -23,6 +24,7 @@ export default function BusinessKnotActions({
   const [showRating, setShowRating] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
 
   async function handleApprove() {
     setLoading("approve");
@@ -33,10 +35,12 @@ export default function BusinessKnotActions({
       .eq("id", knotId);
 
     if (error) {
+      toast("error", "Failed to approve knot");
       setLoading(null);
       return;
     }
 
+    toast("success", "Knot completed!");
     setShowRating(true);
   }
 
@@ -53,10 +57,12 @@ export default function BusinessKnotActions({
       .eq("id", knotId);
 
     if (error) {
+      toast("error", "Failed to send revision request");
       setLoading(null);
       return;
     }
 
+    toast("success", "Revision request sent");
     router.refresh();
   }
 

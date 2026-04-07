@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui";
+import { useToast } from "@/components/ui/Toast";
 
 interface ApplicantActionsProps {
   applicationId: string;
@@ -17,6 +18,7 @@ export default function ApplicantActions({
   const [loading, setLoading] = useState<"connect" | "decline" | null>(null);
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
 
   async function handleAction(action: "connect" | "decline") {
     setLoading(action);
@@ -29,32 +31,12 @@ export default function ApplicantActions({
       .eq("id", applicationId);
 
     if (error) {
+      toast("error", `Failed to ${action} application`);
       setLoading(null);
       return;
     }
 
-    // If connecting, create a knot
-    if (action === "connect") {
-      const { data: app } = await supabase
-        .from("applications")
-        .select("creator_id, offer_id, offer:offers(business_id)")
-        .eq("id", applicationId)
-        .single();
-
-      if (app) {
-        await supabase.from("knots").insert({
-          application_id: applicationId,
-          offer_id: app.offer_id,
-          creator_id: app.creator_id,
-          business_id: (app.offer as unknown as { business_id: string }).business_id,
-          status: "connected",
-          proof_urls: [],
-          is_guarantee_redo: false,
-          admin_assigned: false,
-        });
-      }
-    }
-
+    toast("success", action === "connect" ? "Creator connected!" : "Application declined");
     router.refresh();
   }
 

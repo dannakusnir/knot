@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui";
+import { useToast } from "@/components/ui/Toast";
 
 interface CreatorApprovalActionsProps {
   creatorId: string;
@@ -15,6 +16,7 @@ export default function CreatorApprovalActions({
   const [loading, setLoading] = useState<"approve" | "reject" | null>(null);
   const router = useRouter();
   const supabase = createClient();
+  const { toast } = useToast();
 
   async function handleAction(action: "approve" | "reject") {
     setLoading(action);
@@ -27,10 +29,12 @@ export default function CreatorApprovalActions({
       .eq("id", creatorId);
 
     if (error) {
+      toast("error", `Failed to ${action} creator`);
       setLoading(null);
       return;
     }
 
+    toast("success", action === "approve" ? "Creator approved!" : "Creator rejected");
     router.refresh();
   }
 

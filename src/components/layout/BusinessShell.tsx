@@ -2,6 +2,7 @@
 
 import BottomNav from "./BottomNav";
 import Header from "./Header";
+import { ToastProvider } from "@/components/ui/Toast";
 import { LayoutDashboard, Megaphone, Link2, User } from "lucide-react";
 
 const businessTabs = [
@@ -17,10 +18,12 @@ export default function BusinessShell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-dvh bg-background">
-      <Header />
-      <main className="pb-20">{children}</main>
-      <BottomNav tabs={businessTabs} />
-    </div>
+    <ToastProvider>
+      <div className="min-h-dvh bg-background">
+        <Header />
+        <main className="pb-20">{children}</main>
+        <BottomNav tabs={businessTabs} />
+      </div>
+    </ToastProvider>
   );
 }
