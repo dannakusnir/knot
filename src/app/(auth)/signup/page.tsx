@@ -4,7 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Button, Input, KnotLogo } from "@/components/ui";
-import { Users, Briefcase, ArrowLeft } from "lucide-react";
+import { Users, Briefcase, ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import type { UserRole } from "@/types";
 
@@ -70,36 +70,49 @@ export default function SignupPage() {
 
   if (step === "role") {
     return (
-      <div className="space-y-8">
-        <div className="text-center space-y-3">
-          <div className="flex justify-center mb-8">
-            <KnotLogo size="lg" />
-          </div>
-          <h1 className="text-3xl font-serif font-medium text-[#3D3229]">
-            Join KNOT
+      <div className="min-h-dvh bg-[color:var(--cream)] flex flex-col">
+        <div className="flex items-center justify-between px-6 pt-14">
+          <Link
+            href="/"
+            className="w-10 h-10 rounded-full bg-[color:var(--paper)] border border-[color:var(--line)] flex items-center justify-center"
+          >
+            <ArrowLeft className="h-[18px] w-[18px] text-[color:var(--ink)]" strokeWidth={1.6} />
+          </Link>
+          <KnotLogo variant="mark" size="sm" />
+        </div>
+
+        <div className="px-6 mt-14">
+          <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--sage)]">
+            WELCOME
+          </span>
+          <h1 className="mt-2.5 font-serif italic text-[40px] font-normal leading-[1] tracking-[-0.02em] text-[color:var(--ink)]">
+            Pull up a<br />chair.
           </h1>
-          <p className="text-base text-[#8A8078]">
-            How would you like to use KNOT?
+          <p className="mt-3.5 text-[13.5px] leading-[1.5] text-[color:var(--ink-mid)] font-medium">
+            Tell us who you are. We&apos;ll shape the room around you.
           </p>
         </div>
 
-        <div className="space-y-3">
+        <div className="px-6 mt-10 space-y-3">
           <button
             onClick={() => {
               setRole("creator");
               setStep("details");
             }}
-            className="w-full flex items-center gap-4 rounded-2xl border-2 border-[#E8E3DD] p-5 text-left transition-all hover:border-[#A5A58D] hover:bg-[#A5A58D]/5 active:scale-[0.98]"
+            className="w-full flex items-center gap-4 rounded-[18px] bg-[color:var(--surface)] border border-[color:var(--line)] p-5 text-left transition-all hover:border-[color:var(--sage)] active:scale-[0.98]"
           >
-            <div className="rounded-xl bg-[#7FC8A9]/15 p-3">
-              <Users className="h-6 w-6 text-[#5BA88A]" />
+            <div className="w-11 h-11 rounded-xl bg-[color:var(--sage-tint)] flex items-center justify-center shrink-0">
+              <Users className="h-5 w-5 text-[color:var(--sage-deep)]" strokeWidth={1.6} />
             </div>
-            <div>
-              <p className="font-semibold text-[#3D3229]">I&apos;m a Creator</p>
-              <p className="text-sm text-[#8A8078]">
-                I create content for local businesses
+            <div className="flex-1">
+              <p className="font-serif text-[18px] font-semibold text-[color:var(--ink)] leading-tight">
+                I&apos;m a Creator
+              </p>
+              <p className="text-[12.5px] text-[color:var(--ink-mid)] mt-1">
+                I make content for local spots.
               </p>
             </div>
+            <ArrowRight className="h-4 w-4 text-[color:var(--ink-faint)]" />
           </button>
 
           <button
@@ -107,57 +120,66 @@ export default function SignupPage() {
               setRole("business");
               setStep("details");
             }}
-            className="w-full flex items-center gap-4 rounded-2xl border-2 border-[#E8E3DD] p-5 text-left transition-all hover:border-[#CB997E] hover:bg-[#CB997E]/5 active:scale-[0.98]"
+            className="w-full flex items-center gap-4 rounded-[18px] bg-[color:var(--surface)] border border-[color:var(--line)] p-5 text-left transition-all hover:border-[color:var(--clay)] active:scale-[0.98]"
           >
-            <div className="rounded-xl bg-[#DDBEA9]/25 p-3">
-              <Briefcase className="h-6 w-6 text-[#CB997E]" />
+            <div className="w-11 h-11 rounded-xl bg-[color:var(--clay-soft)] flex items-center justify-center shrink-0">
+              <Briefcase className="h-5 w-5 text-[color:var(--clay-deep)]" strokeWidth={1.6} />
             </div>
-            <div>
-              <p className="font-semibold text-[#3D3229]">I&apos;m a Business</p>
-              <p className="text-sm text-[#8A8078]">
-                I want creators to make content for my business
+            <div className="flex-1">
+              <p className="font-serif text-[18px] font-semibold text-[color:var(--ink)] leading-tight">
+                I&apos;m a Business
+              </p>
+              <p className="text-[12.5px] text-[color:var(--ink-mid)] mt-1">
+                I want creators to visit my place.
               </p>
             </div>
+            <ArrowRight className="h-4 w-4 text-[color:var(--ink-faint)]" />
           </button>
         </div>
 
-        <p className="text-center text-sm text-[#8A8078]">
-          Already have an account?{" "}
-          <Link href="/login" className="text-[#6B705C] font-semibold hover:underline">
-            Sign in
-          </Link>
-        </p>
+        <div className="mt-auto px-6 pb-10 pt-6">
+          <p className="text-center text-[12.5px] text-[color:var(--ink-mid)] font-medium">
+            Already here?{" "}
+            <Link
+              href="/login"
+              className="text-[color:var(--ink)] font-bold underline underline-offset-[3px]"
+            >
+              Sign in
+            </Link>
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
-      <div className="text-center space-y-3">
-        <div className="flex justify-center mb-8">
-          <KnotLogo size="lg" />
-        </div>
-        <div className="inline-flex items-center gap-2 rounded-full bg-[#A5A58D]/12 px-4 py-1.5 mb-2">
-          {role === "creator" ? (
-            <Users className="h-4 w-4 text-[#5BA88A]" />
-          ) : (
-            <Briefcase className="h-4 w-4 text-[#CB997E]" />
-          )}
-          <span className="text-sm font-medium text-[#3D3229]">
-            {role === "creator" ? "Creator" : "Business"}
-          </span>
-        </div>
-        <h1 className="text-3xl font-serif font-medium text-[#3D3229]">
-          Create your account
-        </h1>
+    <div className="min-h-dvh bg-[color:var(--cream)] flex flex-col">
+      <div className="flex items-center justify-between px-6 pt-14">
+        <button
+          onClick={() => setStep("role")}
+          className="w-10 h-10 rounded-full bg-[color:var(--paper)] border border-[color:var(--line)] flex items-center justify-center"
+        >
+          <ArrowLeft className="h-[18px] w-[18px] text-[color:var(--ink)]" strokeWidth={1.6} />
+        </button>
+        <KnotLogo variant="mark" size="sm" />
       </div>
 
-      <form onSubmit={handleSignup} className="space-y-4">
+      <div className="px-6 mt-14">
+        <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--sage)]">
+          {role === "creator" ? "FOR CREATORS" : "FOR BUSINESSES"}
+        </span>
+        <h1 className="mt-2.5 font-serif italic text-[36px] font-normal leading-[1] tracking-[-0.02em] text-[color:var(--ink)]">
+          A few details<br />and you&apos;re in.
+        </h1>
+        <p className="mt-3 text-[13px] leading-[1.5] text-[color:var(--ink-mid)] font-medium">
+          No CV, no portfolio required — we&apos;ll build it as you go.
+        </p>
+      </div>
+
+      <form onSubmit={handleSignup} className="px-6 mt-8 flex flex-col gap-3.5">
         <Input
           label="Full Name"
-          placeholder={
-            role === "creator" ? "Your name" : "Your name or business name"
-          }
+          placeholder={role === "creator" ? "Maya Levin" : "Your name or business"}
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -181,23 +203,29 @@ export default function SignupPage() {
         />
 
         {error && (
-          <div className="rounded-xl bg-[#E07A5F]/10 px-4 py-3">
-            <p className="text-sm text-[#E07A5F] text-center">{error}</p>
+          <div className="rounded-xl bg-[color:var(--destructive-soft)] px-4 py-3 border border-[color:var(--destructive)]/20">
+            <p className="text-[13px] text-[color:var(--destructive)] text-center">{error}</p>
           </div>
         )}
-
-        <Button type="submit" loading={loading} className="w-full" size="lg">
-          Create Account
-        </Button>
       </form>
 
-      <button
-        onClick={() => setStep("role")}
-        className="flex items-center gap-2 mx-auto text-sm text-[#8A8078] hover:text-[#3D3229] transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to role selection
-      </button>
+      <div className="mt-auto px-6 pb-10 pt-6">
+        <Button
+          type="submit"
+          onClick={handleSignup}
+          loading={loading}
+          className="w-full"
+          size="lg"
+        >
+          Continue
+        </Button>
+        <p className="mt-4 text-center text-[11.5px] text-[color:var(--ink-soft)] font-medium leading-[1.5]">
+          By continuing you agree to{" "}
+          <span className="text-[color:var(--ink)] underline underline-offset-2">Terms</span>{" "}
+          &{" "}
+          <span className="text-[color:var(--ink)] underline underline-offset-2">Privacy</span>.
+        </p>
+      </div>
     </div>
   );
 }
