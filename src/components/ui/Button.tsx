@@ -3,7 +3,15 @@
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 
-type ButtonVariant = "primary" | "secondary" | "outline" | "ghost" | "destructive";
+type ButtonVariant =
+  | "primary"
+  | "sage"
+  | "clay"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "destructive"
+  | "dark";
 type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -14,17 +22,28 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary: "bg-primary text-white hover:bg-primary-hover shadow-sm hover:shadow-md",
-  secondary: "bg-secondary text-foreground hover:bg-secondary-hover",
-  outline: "border border-border bg-transparent text-foreground hover:bg-muted",
-  ghost: "bg-transparent text-foreground hover:bg-muted",
-  destructive: "bg-destructive text-white hover:opacity-90",
+  primary:
+    "bg-[color:var(--sage)] text-white hover:bg-[color:var(--sage-deep)] border border-[color:var(--sage)] hover:border-[color:var(--sage-deep)]",
+  sage:
+    "bg-[color:var(--sage)] text-white hover:bg-[color:var(--sage-deep)] border border-[color:var(--sage)] hover:border-[color:var(--sage-deep)]",
+  clay:
+    "bg-[color:var(--clay)] text-white hover:bg-[color:var(--clay-deep)] border border-[color:var(--clay)] hover:border-[color:var(--clay-deep)]",
+  secondary:
+    "bg-[color:var(--clay)] text-white hover:bg-[color:var(--clay-deep)] border border-[color:var(--clay)]",
+  outline:
+    "border border-[color:var(--line)] bg-transparent text-[color:var(--ink)] hover:bg-[color:var(--paper)]",
+  ghost:
+    "bg-transparent text-[color:var(--ink)] hover:bg-[color:var(--paper)]",
+  destructive:
+    "bg-[color:var(--destructive)] text-white hover:opacity-90 border border-[color:var(--destructive)]",
+  dark:
+    "bg-[color:var(--ink)] text-[color:var(--cream)] hover:opacity-90 border border-[color:var(--ink)]",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "h-9 px-3 text-sm rounded-lg",
-  md: "h-11 px-5 text-sm rounded-xl",
-  lg: "h-12 px-6 text-base rounded-xl",
+  sm: "h-9 px-4 text-[12.5px] tracking-[0.14em] uppercase rounded-full",
+  md: "h-12 px-5 text-[13px] tracking-[0.14em] uppercase rounded-full",
+  lg: "h-14 px-6 text-[13.5px] tracking-[0.14em] uppercase rounded-full",
 };
 
 export default function Button({
@@ -39,7 +58,7 @@ export default function Button({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center gap-2 font-medium transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 disabled:opacity-50 disabled:pointer-events-none",
+        "inline-flex items-center justify-center gap-2 font-semibold transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--sage)]/40 disabled:opacity-50 disabled:pointer-events-none",
         variantStyles[variant],
         sizeStyles[size],
         className

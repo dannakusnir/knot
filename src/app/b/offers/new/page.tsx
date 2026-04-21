@@ -3,12 +3,8 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { Button, Input, Textarea, Select, Card } from "@/components/ui";
-import {
-  OFFER_CATEGORIES,
-  DELIVERABLE_TYPES,
-  USAGE_RIGHTS,
-} from "@/lib/constants";
+import { Button, Input, Textarea, Select } from "@/components/ui";
+import { OFFER_CATEGORIES, USAGE_RIGHTS } from "@/lib/constants";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -33,12 +29,12 @@ export default function NewOfferPage() {
     setError("");
 
     if (!title.trim() || !description.trim() || !deliverables.trim()) {
-      setError("Title, description, and deliverables are required");
+      setError("Title, description, and what you give are all required.");
       return;
     }
 
     if (deadline && new Date(deadline) < new Date()) {
-      setError("Deadline must be in the future");
+      setError("Deadline must be in the future.");
       return;
     }
 
@@ -48,7 +44,7 @@ export default function NewOfferPage() {
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) {
-      setError("You must be logged in");
+      setError("You must be logged in.");
       setLoading(false);
       return;
     }
@@ -77,59 +73,85 @@ export default function NewOfferPage() {
   }
 
   return (
-    <div className="px-4 py-6 space-y-6">
-      <div className="flex items-center gap-3">
+    <div className="min-h-dvh bg-[color:var(--cream)] pb-10">
+      {/* Top */}
+      <div className="flex items-center justify-between px-5 pt-14 pb-6">
         <Link
           href="/b/offers"
-          className="rounded-lg p-2 hover:bg-muted transition-colors"
+          className="w-10 h-10 rounded-full bg-[color:var(--paper)] border border-[color:var(--line)] flex items-center justify-center"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft className="h-[18px] w-[18px] text-[color:var(--ink)]" strokeWidth={1.6} />
         </Link>
-        <div>
-          <h1 className="text-xl font-serif font-semibold">Create Offer</h1>
-          <p className="text-sm text-muted-foreground">
-            Describe what you&apos;re looking for
-          </p>
-        </div>
+        <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--ink-soft)]">
+          NEW TRADE
+        </span>
+        <div className="w-10 h-10" />
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Title */}
+      <div className="px-5 mb-8">
+        <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--clay-deep)]">
+          POST A TRADE
+        </span>
+        <h1 className="mt-2 font-serif italic text-[36px] font-normal leading-[1] tracking-[-0.02em] text-[color:var(--ink)]">
+          What are<br />you offering?
+        </h1>
+        <p className="mt-3 text-[13px] leading-[1.5] text-[color:var(--ink-mid)] font-medium">
+          Creators see this card first. Keep it honest, keep it warm.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="px-5 space-y-4">
         <Input
           label="Title"
-          placeholder="e.g. Instagram Reel for our new menu"
+          placeholder="e.g. Dinner for two in exchange for a reel"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
         />
 
         <Textarea
-          label="Description"
-          placeholder="Describe the collaboration in detail..."
+          label="Your pitch"
+          placeholder="Tell creators what the vibe is. Why should they come?"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={4}
           required
         />
 
-        <Textarea
-          label="Deliverables"
-          placeholder="e.g. 1 Instagram Reel (30-60s) + 3 Instagram Stories"
-          value={deliverables}
-          onChange={(e) => setDeliverables(e.target.value)}
-          rows={2}
-          required
-        />
+        <div className="grid grid-cols-2 gap-3">
+          <div className="col-span-2">
+            <div className="rounded-[14px] bg-[color:var(--sage-tint)] border border-[color:var(--sage-soft)] p-4">
+              <div className="font-mono text-[8.5px] font-bold tracking-[0.18em] text-[color:var(--sage-deep)] mb-3">
+                YOU GIVE
+              </div>
+              <Input
+                placeholder="e.g. Dinner for two · $80 value"
+                value={compensation}
+                onChange={(e) => setCompensation(e.target.value)}
+              />
+            </div>
+          </div>
 
-        <Input
-          label="Compensation"
-          placeholder="e.g. Free dinner for 2 + $50"
-          value={compensation}
-          onChange={(e) => setCompensation(e.target.value)}
-        />
+          <div className="col-span-2">
+            <div className="rounded-[14px] bg-[color:var(--clay-soft)] border border-[color:var(--clay-tint)] p-4">
+              <div className="font-mono text-[8.5px] font-bold tracking-[0.18em] text-[color:var(--clay-deep)] mb-3">
+                YOU GET
+              </div>
+              <Textarea
+                placeholder="e.g. 1 Instagram Reel + 3 Stories"
+                value={deliverables}
+                onChange={(e) => setDeliverables(e.target.value)}
+                rows={2}
+                required
+              />
+            </div>
+          </div>
+        </div>
 
         <Select
-          label="Usage Rights"
-          placeholder="Select usage rights"
+          label="Usage rights"
+          placeholder="How can you use their content?"
           value={usageRights}
           onChange={(e) => setUsageRights(e.target.value)}
           options={USAGE_RIGHTS.map((r) => ({ value: r, label: r }))}
@@ -137,7 +159,7 @@ export default function NewOfferPage() {
 
         <Select
           label="Category"
-          placeholder="Select a category"
+          placeholder="What kind of spot are you?"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           options={OFFER_CATEGORIES.map((cat) => ({
@@ -147,34 +169,47 @@ export default function NewOfferPage() {
         />
 
         <Input
-          label="Location / Address"
-          placeholder="123 Main St, Hoboken NJ"
+          label="Location"
+          placeholder="123 Main St, Cresskill NJ"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
 
-        <Input
-          label="Deadline"
-          type="date"
-          value={deadline}
-          onChange={(e) => setDeadline(e.target.value)}
-        />
-
-        <Input
-          label="Max Creators"
-          type="number"
-          min="1"
-          value={maxCreators}
-          onChange={(e) => setMaxCreators(e.target.value)}
-        />
+        <div className="grid grid-cols-2 gap-3">
+          <Input
+            label="Deadline"
+            type="date"
+            value={deadline}
+            onChange={(e) => setDeadline(e.target.value)}
+          />
+          <Input
+            label="Max creators"
+            type="number"
+            min="1"
+            value={maxCreators}
+            onChange={(e) => setMaxCreators(e.target.value)}
+          />
+        </div>
 
         {error && (
-          <p className="text-sm text-destructive text-center">{error}</p>
+          <div className="rounded-xl bg-[color:var(--destructive-soft)] border border-[color:var(--destructive)]/20 px-4 py-3">
+            <p className="text-[13px] text-[color:var(--destructive)] text-center font-medium">
+              {error}
+            </p>
+          </div>
         )}
 
-        <Button type="submit" loading={loading} className="w-full" size="lg">
-          Publish Offer
-        </Button>
+        <div className="pt-3">
+          <Button
+            type="submit"
+            loading={loading}
+            variant="clay"
+            className="w-full"
+            size="lg"
+          >
+            Post this trade
+          </Button>
+        </div>
       </form>
     </div>
   );

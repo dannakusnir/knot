@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireRole } from "@/lib/auth";
-import { Badge, EmptyState, Avatar } from "@/components/ui";
+import { EmptyState, Avatar } from "@/components/ui";
 import { KNOT_STATUSES, APPLICATION_STATUSES } from "@/lib/constants";
-import { Link2, Clock, CheckCircle, Compass } from "lucide-react";
+import { Clock, Compass } from "lucide-react";
 import Link from "next/link";
 import type { KnotStatus, ApplicationStatus } from "@/types";
 
@@ -18,166 +18,231 @@ export default async function CreatorDashboardPage() {
 
   const { data: knots } = await supabase
     .from("knots")
-    .select("*, offer:offers(title, business_id), business:business_profiles(business_name, logo_url)")
+    .select(
+      "*, offer:offers(title, business_id), business:business_profiles(business_name, logo_url)"
+    )
     .eq("creator_id", user.id)
     .order("created_at", { ascending: false });
 
   const { data: applications } = await supabase
     .from("applications")
-    .select("*, offer:offers(title, business_id, business:business_profiles(business_name, logo_url))")
+    .select(
+      "*, offer:offers(title, business_id, business:business_profiles(business_name, logo_url))"
+    )
     .eq("creator_id", user.id)
     .eq("status", "pending")
     .order("created_at", { ascending: false });
 
-  const activeKnots = knots?.filter((k) => !["completed", "cancelled"].includes(k.status)) ?? [];
+  const activeKnots =
+    knots?.filter((k) => !["completed", "cancelled"].includes(k.status)) ?? [];
   const completedKnots = knots?.filter((k) => k.status === "completed") ?? [];
 
-  const statusVariant = (status: KnotStatus) => {
-    switch (status) {
-      case "connected":
-      case "in_progress":
-        return "default" as const;
-      case "proof_submitted":
-        return "secondary" as const;
-      case "completed":
-        return "success" as const;
-      case "revision_requested":
-        return "destructive" as const;
-      default:
-        return "default" as const;
-    }
-  };
-
   return (
-    <div className="min-h-dvh bg-[#EDE8E2]">
-      <div className="px-5 pt-6 pb-4">
-        <h1 className="text-3xl font-serif font-medium text-[#3D3229]">
-          Your Knots
+    <div className="min-h-dvh bg-[color:var(--cream)]">
+      <div className="px-5 pt-7 pb-3">
+        <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--ink-soft)]">
+          YOUR BOARD
+        </span>
+        <h1 className="mt-2 font-serif italic text-[40px] font-normal leading-[0.95] tracking-[-0.025em] text-[color:var(--ink)]">
+          Knots.
         </h1>
-        <p className="text-base text-[#8A8078] mt-1">
-          Track your collaborations
+        <p className="mt-1.5 font-serif italic text-[15px] font-normal text-[color:var(--sage-deep)]">
+          {activeKnots.length === 0 && (!applications || applications.length === 0)
+            ? "No active collaborations yet."
+            : `${activeKnots.length} in flight${
+                applications && applications.length
+                  ? `, ${applications.length} pending`
+                  : ""
+              }.`}
         </p>
       </div>
 
-      <div className="px-4 pb-24 space-y-5">
+      <div className="px-4 pt-5 pb-28 space-y-6">
         {/* Quick stats */}
-        <div className="flex gap-3">
-          <div className="flex-1 rounded-2xl bg-[#7FC8A9]/12 p-4 text-center">
-            <p className="text-2xl font-semibold text-[#3D3229]">{creatorProfile?.total_knots ?? 0}</p>
-            <p className="text-xs text-[#5BA88A] font-medium mt-0.5">Knots</p>
-          </div>
-          <div className="flex-1 rounded-2xl bg-[#DDBEA9]/20 p-4 text-center">
-            <p className="text-2xl font-semibold text-[#3D3229]">
-              {creatorProfile?.avg_rating ? creatorProfile.avg_rating.toFixed(1) : "--"}
+        <div className="grid grid-cols-3 gap-2">
+          <div className="rounded-[14px] bg-[color:var(--sage-tint)] border border-[color:var(--sage-soft)] px-3 py-3.5 text-center">
+            <p className="font-serif text-[26px] font-medium text-[color:var(--ink)] leading-none">
+              {creatorProfile?.total_knots ?? 0}
             </p>
-            <p className="text-xs text-[#CB997E] font-medium mt-0.5">Rating</p>
-          </div>
-          <div className="flex-1 rounded-2xl bg-[#A5A58D]/12 p-4 text-center">
-            <p className="text-2xl font-semibold text-[#3D3229]">
-              {creatorProfile?.completion_rate ? `${Math.round(creatorProfile.completion_rate * 100)}%` : "--"}
+            <p className="font-mono text-[9px] font-bold tracking-[0.18em] uppercase text-[color:var(--sage-deep)] mt-1.5">
+              Knots
             </p>
-            <p className="text-xs text-[#6B705C] font-medium mt-0.5">Complete</p>
+          </div>
+          <div className="rounded-[14px] bg-[color:var(--clay-soft)] border border-[color:var(--clay-tint)] px-3 py-3.5 text-center">
+            <p className="font-serif italic text-[26px] font-medium text-[color:var(--ink)] leading-none">
+              {creatorProfile?.avg_rating
+                ? creatorProfile.avg_rating.toFixed(1)
+                : "—"}
+            </p>
+            <p className="font-mono text-[9px] font-bold tracking-[0.18em] uppercase text-[color:var(--clay-deep)] mt-1.5">
+              Rating
+            </p>
+          </div>
+          <div className="rounded-[14px] bg-[color:var(--sand)] border border-[color:var(--line)] px-3 py-3.5 text-center">
+            <p
+              className="font-serif text-[26px] font-medium leading-none"
+              style={{ color: "var(--sand-ink)" }}
+            >
+              {creatorProfile?.completion_rate
+                ? `${Math.round(creatorProfile.completion_rate * 100)}%`
+                : "—"}
+            </p>
+            <p
+              className="font-mono text-[9px] font-bold tracking-[0.18em] uppercase mt-1.5"
+              style={{ color: "var(--sand-ink)" }}
+            >
+              Complete
+            </p>
           </div>
         </div>
 
         {/* Pending Applications */}
         {applications && applications.length > 0 && (
-          <div className="space-y-2">
-            <p className="text-[11px] text-[#CB997E] uppercase tracking-[0.15em] font-semibold px-1 flex items-center gap-1.5">
-              <Clock className="h-3.5 w-3.5" />
-              Pending ({applications.length})
-            </p>
-            {applications.map((app) => (
-              <Link key={app.id} href={`/c/offers/${app.offer_id}`}>
-                <div className="rounded-2xl bg-white px-4 py-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform">
-                  <Avatar
-                    src={app.offer?.business?.logo_url}
-                    name={app.offer?.business?.business_name ?? ""}
-                    size="sm"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[15px] font-semibold text-[#3D3229] truncate">
-                      {app.offer?.title}
-                    </p>
-                    <p className="text-sm text-[#8A8078]">
-                      {app.offer?.business?.business_name}
-                    </p>
-                  </div>
-                  <Badge variant="secondary">
-                    {APPLICATION_STATUSES[app.status as ApplicationStatus]}
-                  </Badge>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <section>
+            <div className="flex items-center gap-1.5 mb-3 px-1">
+              <Clock className="h-3.5 w-3.5 text-[color:var(--clay-deep)]" strokeWidth={2} />
+              <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--clay-deep)]">
+                PENDING · {applications.length}
+              </span>
+            </div>
+            <div className="space-y-2">
+              {applications.map((app) => {
+                const offerRaw = app.offer as unknown;
+                const offer = (Array.isArray(offerRaw) ? offerRaw[0] : offerRaw) as {
+                  title?: string;
+                  business?: { business_name?: string; logo_url?: string };
+                } | null;
+
+                return (
+                  <Link key={app.id} href={`/c/offers/${app.offer_id}`}>
+                    <div className="rounded-[14px] bg-[color:var(--surface)] border border-[color:var(--line)] px-4 py-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform">
+                      <Avatar
+                        src={offer?.business?.logo_url}
+                        name={offer?.business?.business_name ?? ""}
+                        size="sm"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-sans text-[13.5px] font-bold text-[color:var(--ink)] truncate">
+                          {offer?.title}
+                        </p>
+                        <p className="font-sans text-[12px] text-[color:var(--ink-soft)] font-medium">
+                          {offer?.business?.business_name}
+                        </p>
+                      </div>
+                      <span className="font-mono text-[9px] font-bold tracking-[0.15em] uppercase px-2 py-1 rounded-full bg-[color:var(--clay-soft)] text-[color:var(--clay-deep)]">
+                        {APPLICATION_STATUSES[app.status as ApplicationStatus]}
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
         )}
 
         {/* Active Knots */}
-        <div className="space-y-2">
-          <p className="text-[11px] text-[#6B705C] uppercase tracking-[0.15em] font-semibold px-1 flex items-center gap-1.5">
-            <Link2 className="h-3.5 w-3.5" />
-            Active ({activeKnots.length})
-          </p>
+        <section>
+          <div className="flex items-center gap-1.5 mb-3 px-1">
+            <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--sage-deep)]">
+              ACTIVE · {activeKnots.length}
+            </span>
+          </div>
           {activeKnots.length === 0 ? (
             <EmptyState
               icon={Compass}
+              tone="sage"
               title="No active knots"
-              description="Browse offers and create your first knot!"
+              description="Browse offers and tie your first knot."
             />
           ) : (
-            activeKnots.map((knot) => (
-              <Link key={knot.id} href={`/c/knots/${knot.id}`}>
-                <div className="rounded-2xl bg-white px-4 py-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform">
-                  <Avatar
-                    src={knot.business?.logo_url}
-                    name={knot.business?.business_name ?? ""}
-                    size="sm"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[15px] font-semibold text-[#3D3229] truncate">
-                      {knot.offer?.title}
-                    </p>
-                    <p className="text-sm text-[#8A8078]">
-                      {knot.business?.business_name}
-                    </p>
-                  </div>
-                  <Badge variant={statusVariant(knot.status)}>
-                    {KNOT_STATUSES[knot.status as KnotStatus]}
-                  </Badge>
-                </div>
-              </Link>
-            ))
+            <div className="space-y-2">
+              {activeKnots.map((knot) => {
+                const status = knot.status as KnotStatus;
+                const needsAction = status === "revision_requested";
+                const offerRaw = knot.offer as unknown;
+                const offer = (Array.isArray(offerRaw) ? offerRaw[0] : offerRaw) as { title?: string } | null;
+                const bizRaw = knot.business as unknown;
+                const biz = (Array.isArray(bizRaw) ? bizRaw[0] : bizRaw) as { business_name?: string; logo_url?: string } | null;
+
+                return (
+                  <Link key={knot.id} href={`/c/knots/${knot.id}`}>
+                    <div
+                      className={`rounded-[14px] px-4 py-3.5 flex items-center gap-3 active:scale-[0.98] transition-transform border ${
+                        needsAction
+                          ? "bg-[color:var(--clay-soft)] border-[color:var(--clay-tint)]"
+                          : "bg-[color:var(--surface)] border-[color:var(--line)]"
+                      }`}
+                    >
+                      <Avatar
+                        src={biz?.logo_url}
+                        name={biz?.business_name ?? ""}
+                        size="sm"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-sans text-[13.5px] font-bold text-[color:var(--ink)] truncate">
+                          {offer?.title}
+                        </p>
+                        <p className="font-sans text-[12px] text-[color:var(--ink-soft)] font-medium">
+                          {biz?.business_name}
+                        </p>
+                      </div>
+                      <span
+                        className={`font-mono text-[9px] font-bold tracking-[0.15em] uppercase px-2 py-1 rounded-full ${
+                          needsAction
+                            ? "text-[color:var(--clay-deep)] bg-white"
+                            : "text-[color:var(--sage-deep)] bg-[color:var(--sage-tint)]"
+                        }`}
+                      >
+                        {KNOT_STATUSES[status]}
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           )}
-        </div>
+        </section>
 
         {/* Completed Knots */}
         {completedKnots.length > 0 && (
-          <div className="space-y-2">
-            <p className="text-[11px] text-[#7FC8A9] uppercase tracking-[0.15em] font-semibold px-1 flex items-center gap-1.5">
-              <CheckCircle className="h-3.5 w-3.5" />
-              Completed ({completedKnots.length})
-            </p>
-            {completedKnots.map((knot) => (
-              <Link key={knot.id} href={`/c/knots/${knot.id}`}>
-                <div className="rounded-2xl bg-white/70 px-4 py-3.5 flex items-center gap-3">
-                  <Avatar
-                    src={knot.business?.logo_url}
-                    name={knot.business?.business_name ?? ""}
-                    size="sm"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[15px] font-semibold text-[#3D3229] truncate">
-                      {knot.offer?.title}
-                    </p>
-                    <p className="text-sm text-[#8A8078]">
-                      {knot.business?.business_name}
-                    </p>
-                  </div>
-                  <Badge variant="success">Completed</Badge>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <section>
+            <div className="flex items-center gap-1.5 mb-3 px-1">
+              <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--ink-soft)]">
+                COMPLETED · {completedKnots.length}
+              </span>
+            </div>
+            <div className="space-y-2 opacity-80">
+              {completedKnots.map((knot) => {
+                const offerRaw = knot.offer as unknown;
+                const offer = (Array.isArray(offerRaw) ? offerRaw[0] : offerRaw) as { title?: string } | null;
+                const bizRaw = knot.business as unknown;
+                const biz = (Array.isArray(bizRaw) ? bizRaw[0] : bizRaw) as { business_name?: string; logo_url?: string } | null;
+
+                return (
+                  <Link key={knot.id} href={`/c/knots/${knot.id}`}>
+                    <div className="rounded-[14px] bg-[color:var(--paper)] border border-[color:var(--line)] px-4 py-3.5 flex items-center gap-3">
+                      <Avatar
+                        src={biz?.logo_url}
+                        name={biz?.business_name ?? ""}
+                        size="sm"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-sans text-[13.5px] font-bold text-[color:var(--ink)] truncate">
+                          {offer?.title}
+                        </p>
+                        <p className="font-sans text-[12px] text-[color:var(--ink-soft)] font-medium">
+                          {biz?.business_name}
+                        </p>
+                      </div>
+                      <span className="font-mono text-[9px] font-bold tracking-[0.15em] uppercase px-2 py-1 rounded-full text-[color:var(--sage-deep)] bg-[color:var(--sage-tint)]">
+                        Completed
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
         )}
       </div>
     </div>
