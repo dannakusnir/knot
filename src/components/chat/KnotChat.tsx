@@ -82,11 +82,16 @@ export default function KnotChat({
     setSending(true);
     setInput("");
 
-    await supabase.from("messages").insert({
+    const { error } = await supabase.from("messages").insert({
       knot_id: knotId,
       sender_id: currentUserId,
       body: text,
     });
+
+    if (error) {
+      // Restore the message to input so user can retry
+      setInput(text);
+    }
 
     setSending(false);
   }

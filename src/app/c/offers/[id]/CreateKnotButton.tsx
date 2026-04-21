@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { Button, Card, Textarea, Badge } from "@/components/ui";
+import { Button, Textarea } from "@/components/ui";
 import { useToast } from "@/components/ui/Toast";
 import Celebration from "@/components/ui/Celebration";
 import { APPLICATION_STATUSES } from "@/lib/constants";
@@ -35,7 +35,7 @@ export default function CreateKnotButton({
       data: { user },
     } = await supabase.auth.getUser();
     if (!user) {
-      toast("error", "You must be logged in to apply");
+      toast("error", "You need to be signed in to apply.");
       setLoading(false);
       return;
     }
@@ -48,7 +48,7 @@ export default function CreateKnotButton({
     });
 
     if (error) {
-      toast("error", "Failed to submit application");
+      toast("error", "Couldn't send your application. Try again.");
       setLoading(false);
       return;
     }
@@ -58,13 +58,17 @@ export default function CreateKnotButton({
   }
 
   if (hasApplied) {
+    const label =
+      APPLICATION_STATUSES[(applicationStatus ?? "pending") as ApplicationStatus];
     return (
-      <Card className="text-center space-y-2">
-        <p className="text-sm font-medium">You&apos;ve already applied</p>
-        <Badge variant="secondary">
-          {APPLICATION_STATUSES[(applicationStatus ?? "pending") as ApplicationStatus]}
-        </Badge>
-      </Card>
+      <div className="rounded-[18px] bg-[color:var(--sage-tint)] border border-[color:var(--sage-soft)] px-5 py-4 text-center">
+        <p className="font-serif italic text-[16px] text-[color:var(--ink)]">
+          You&apos;ve applied.
+        </p>
+        <p className="mt-1 font-mono text-[9.5px] font-bold tracking-[0.22em] uppercase text-[color:var(--sage-deep)]">
+          {label}
+        </p>
+      </div>
     );
   }
 
@@ -73,11 +77,15 @@ export default function CreateKnotButton({
       <>
         <Celebration
           trigger={celebrate}
-          title="Application Sent!"
-          subtitle="Fingers crossed!"
+          title="On its way."
+          subtitle="Fingers crossed."
         />
-        <Button onClick={() => setShowForm(true)} className="w-full" size="lg">
-          Create Knot
+        <Button
+          onClick={() => setShowForm(true)}
+          className="w-full"
+          size="lg"
+        >
+          Apply for this knot
         </Button>
       </>
     );
@@ -85,33 +93,43 @@ export default function CreateKnotButton({
 
   return (
     <>
-    <Celebration
-      trigger={celebrate}
-      title="Application Sent!"
-      subtitle="Fingers crossed!"
-    />
-    <Card className="space-y-4">
-      <h3 className="text-sm font-medium">Create Knot</h3>
-      <Textarea
-        label="Message (optional)"
-        placeholder="Tell the business why you're a great fit..."
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        rows={3}
+      <Celebration
+        trigger={celebrate}
+        title="On its way."
+        subtitle="Fingers crossed."
       />
-      <div className="flex gap-3">
-        <Button
-          variant="outline"
-          onClick={() => setShowForm(false)}
-          className="flex-1"
-        >
-          Cancel
-        </Button>
-        <Button onClick={handleApply} loading={loading} className="flex-1">
-          Send Application
-        </Button>
+      <div className="rounded-[18px] bg-[color:var(--surface)] border border-[color:var(--line)] p-4 space-y-4">
+        <div>
+          <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--sage-deep)]">
+            WHY YOU
+          </span>
+          <p className="mt-1 font-serif italic text-[15px] text-[color:var(--ink-mid)] leading-[1.5]">
+            A line or two is plenty. Skip if you&apos;d rather.
+          </p>
+        </div>
+        <Textarea
+          placeholder="I cook dinner here every Friday. I'd love to tell this story."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          rows={3}
+        />
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => setShowForm(false)}
+            className="flex-1"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleApply}
+            loading={loading}
+            className="flex-1"
+          >
+            Send
+          </Button>
+        </div>
       </div>
-    </Card>
     </>
   );
 }

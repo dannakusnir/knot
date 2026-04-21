@@ -266,7 +266,7 @@ export default async function BusinessOfferDetailPage({ params }: Props) {
                     {creator?.profile?.full_name}
                   </p>
                   <span className="font-mono text-[9px] font-bold tracking-[0.15em] uppercase text-[color:var(--sage-deep)]">
-                    Connected
+                    Tied
                   </span>
                 </div>
               );
