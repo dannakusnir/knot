@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireRole } from "@/lib/auth";
-import { EmptyState } from "@/components/ui";
+import { EmptyState, LivePulse, SectionEyebrow } from "@/components/ui";
 import { getBusinessImages, getOfferImage } from "@/lib/business-images";
 import ImageSlider from "@/components/ui/ImageSlider";
 import { MapPin, Briefcase, Megaphone, ChevronRight, Star } from "lucide-react";
@@ -36,15 +36,16 @@ export default async function ExplorePage() {
 
   if (creatorProfile?.approval_status === "pending") {
     return (
-      <div className="px-5 py-12">
-        <div className="mx-auto max-w-sm text-center space-y-4">
-          <div className="w-16 h-16 rounded-full bg-[#DDBEA9]/30 flex items-center justify-center mx-auto">
-            <Briefcase className="h-7 w-7 text-[#CB997E]" />
+      <div className="px-6 py-16">
+        <div className="mx-auto max-w-sm text-center space-y-5">
+          <div className="w-16 h-16 rounded-full bg-[color:var(--clay-soft)] flex items-center justify-center mx-auto">
+            <Briefcase className="h-6 w-6 text-[color:var(--clay)]" strokeWidth={1.5} />
           </div>
-          <h1 className="text-2xl font-serif font-medium">
-            Profile Under Review
+          <SectionEyebrow label="Under Review" accent className="text-center" />
+          <h1 className="font-serif text-3xl font-medium text-ink leading-tight">
+            <em className="italic text-[color:var(--sage-deep)]">Almost</em> there.
           </h1>
-          <p className="text-base text-[#8A8078]">
+          <p className="font-serif italic text-base text-[color:var(--ink-mid)]">
             Your creator profile is being reviewed. You&apos;ll be able to
             browse offers once approved.
           </p>
@@ -71,19 +72,34 @@ export default async function ExplorePage() {
     }))
     .filter((biz) => biz.offers.length > 0);
 
+  const totalOffers = businessesWithOffers.reduce((sum, biz) => sum + biz.offers.length, 0);
+
   return (
-    <div className="min-h-dvh bg-[#EDE8E2]">
-      <div className="px-5 pt-6 pb-4">
-        <h1 className="text-3xl font-serif font-medium text-[#3D3229]">
-          Discover
-        </h1>
-        <p className="text-base text-[#8A8078] mt-1">
-          Local businesses looking for you ✨
-        </p>
+    <div className="min-h-dvh bg-[color:var(--background)]">
+      {/* Editorial header */}
+      <div className="px-5 pt-7 pb-5">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <SectionEyebrow num="01" label="Discover" accent />
+            <h1 className="mt-3 font-serif text-[40px] font-normal tracking-[-0.015em] text-ink leading-[1]">
+              Discover<span className="text-[color:var(--clay)]">.</span>
+            </h1>
+            <p className="mt-2 font-serif italic text-[15px] text-[color:var(--ink-mid)]">
+              Local businesses looking for you.
+            </p>
+          </div>
+          {totalOffers > 0 && (
+            <div className="mt-2">
+              <LivePulse count={totalOffers} label="offers" />
+            </div>
+          )}
+        </div>
       </div>
 
+      <div className="hairline" />
+
       {businessesWithOffers.length === 0 ? (
-        <div className="px-5">
+        <div className="px-5 py-10">
           <EmptyState
             icon={Megaphone}
             title="No offers yet"
@@ -91,11 +107,11 @@ export default async function ExplorePage() {
           />
         </div>
       ) : (
-        <div className="px-4 pb-24 space-y-4">
-          {businessesWithOffers.map((biz) => (
-            <div
+        <div className="px-4 pt-5 pb-28 space-y-5">
+          {businessesWithOffers.map((biz, index) => (
+            <article
               key={biz.id}
-              className="rounded-[1.5rem] overflow-hidden bg-white"
+              className="rounded-[20px] overflow-hidden bg-[color:var(--paper)] border border-[color:var(--line)]"
             >
               {/* Business hero image slider */}
               <div className="relative">
@@ -109,37 +125,40 @@ export default async function ExplorePage() {
                       alt={biz.business_name}
                     />
                   ) : (
-                    <div className="aspect-[3/2] bg-[#E8E3DD] flex items-center justify-center">
-                      <Megaphone className="h-10 w-10 text-[#C4BBB2]" />
+                    <div className="aspect-[3/2] bg-[color:var(--muted)] flex items-center justify-center">
+                      <Megaphone className="h-10 w-10 text-[color:var(--ink-faint)]" strokeWidth={1.2} />
                     </div>
                   );
                 })()}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/5 to-transparent pointer-events-none" />
 
-                {/* Category pill */}
-                {biz.category && (
-                  <div className="absolute top-3 left-3 z-10">
-                    <span className="px-3 py-1 rounded-full bg-white/90 text-[#3D3229] text-xs font-semibold">
+                {/* Serial number + category */}
+                <div className="absolute top-3 left-3 z-10 flex items-center gap-2">
+                  <span className="font-mono text-[9px] font-bold tracking-[0.2em] uppercase text-white bg-black/30 backdrop-blur-sm px-2 py-1 rounded-sm">
+                    № {String(index + 1).padStart(2, "0")}
+                  </span>
+                  {biz.category && (
+                    <span className="font-mono text-[9px] font-bold tracking-[0.18em] uppercase bg-white/90 text-ink px-2 py-1 rounded-sm">
                       {biz.category}
                     </span>
-                  </div>
-                )}
+                  )}
+                </div>
 
                 {/* Business info on image */}
                 <div className="absolute bottom-0 left-0 right-0 p-4 z-10 pointer-events-none">
-                  <h2 className="text-2xl font-serif font-medium text-white leading-tight">
+                  <h2 className="font-serif text-[26px] font-medium italic text-white leading-[1.05]">
                     {biz.business_name}
                   </h2>
                   <div className="flex items-center gap-3 mt-1.5">
                     {biz.city && (
-                      <span className="flex items-center gap-1 text-sm text-white/80">
-                        <MapPin className="h-3.5 w-3.5" />
+                      <span className="flex items-center gap-1 font-mono text-[10px] tracking-[0.15em] uppercase text-white/85">
+                        <MapPin className="h-3 w-3" strokeWidth={2} />
                         {biz.city}
                       </span>
                     )}
                     {biz.avg_rating > 0 && (
-                      <span className="flex items-center gap-1 text-sm text-white/80">
-                        <Star className="h-3.5 w-3.5 fill-[#DDBEA9] text-[#DDBEA9]" />
+                      <span className="flex items-center gap-1 font-mono text-[10px] tracking-[0.15em] text-white/85">
+                        <Star className="h-3 w-3 fill-white text-white" />
                         {biz.avg_rating.toFixed(1)}
                       </span>
                     )}
@@ -148,55 +167,63 @@ export default async function ExplorePage() {
               </div>
 
               {/* Offers */}
-              <div className="p-4 space-y-2">
-                <p className="text-[11px] text-[#CB997E] uppercase tracking-[0.15em] font-semibold mb-1">
-                  {biz.offers.length} offer{biz.offers.length !== 1 ? "s" : ""} available
-                </p>
-                {biz.offers.map((offer) => {
-                  const offerImg = getOfferImage(biz.business_name, offer.title);
-                  return (
-                  <Link key={offer.id} href={`/c/offers/${offer.id}`}>
-                    <div className="flex items-center gap-3 rounded-2xl bg-[#F7F4F0] px-4 py-3.5 active:scale-[0.98] transition-transform">
-                      {offerImg ? (
-                        <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0">
-                          <Image
-                            src={offerImg}
-                            alt={offer.title}
-                            width={80}
-                            height={80}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      ) : (
-                        <div className="w-9 h-9 rounded-full bg-[#A5A58D]/15 flex items-center justify-center shrink-0">
-                          <Megaphone className="h-4 w-4 text-[#A5A58D]" />
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[15px] font-semibold text-[#3D3229] truncate">
-                          {offer.title}
-                        </p>
-                        <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="text-sm text-[#8A8078]">
-                            {offer.deliverables}
-                          </span>
-                          {offer.compensation && (
-                            <>
-                              <span className="text-[#C4BBB2]">·</span>
-                              <span className="text-sm text-[#6B705C] font-medium">
-                                {offer.compensation}
-                              </span>
-                            </>
+              <div className="px-4 py-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[color:var(--line)]">
+                  <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-[color:var(--sage-deep)]">
+                    § {biz.offers.length} offer{biz.offers.length !== 1 ? "s" : ""}
+                  </span>
+                  <span className="font-mono text-[10px] tracking-[0.18em] uppercase text-[color:var(--ink-soft)]">
+                    Open
+                  </span>
+                </div>
+
+                <div className="divide-y divide-[color:var(--line)]">
+                  {biz.offers.map((offer) => {
+                    const offerImg = getOfferImage(biz.business_name, offer.title);
+                    return (
+                      <Link key={offer.id} href={`/c/offers/${offer.id}`}>
+                        <div className="flex items-center gap-3 py-3.5 active:opacity-60 transition-opacity">
+                          {offerImg ? (
+                            <div className="w-11 h-11 rounded-lg overflow-hidden shrink-0 border border-[color:var(--line)]">
+                              <Image
+                                src={offerImg}
+                                alt={offer.title}
+                                width={88}
+                                height={88}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-11 h-11 rounded-lg bg-[color:var(--muted)] flex items-center justify-center shrink-0">
+                              <Megaphone className="h-4 w-4 text-[color:var(--ink-faint)]" strokeWidth={1.5} />
+                            </div>
                           )}
+                          <div className="flex-1 min-w-0">
+                            <p className="font-serif text-[16px] font-medium text-ink truncate leading-tight">
+                              {offer.title}
+                            </p>
+                            <div className="flex items-center gap-1.5 mt-1">
+                              <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[color:var(--ink-soft)]">
+                                {offer.deliverables}
+                              </span>
+                              {offer.compensation && (
+                                <>
+                                  <span className="text-[color:var(--ink-faint)]">·</span>
+                                  <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[color:var(--sage-deep)] font-semibold">
+                                    {offer.compensation}
+                                  </span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                          <ChevronRight className="h-4 w-4 text-[color:var(--ink-faint)] shrink-0" strokeWidth={1.5} />
                         </div>
-                      </div>
-                      <ChevronRight className="h-4 w-4 text-[#C4BBB2] shrink-0" />
-                    </div>
-                  </Link>
-                  );
-                })}
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       )}

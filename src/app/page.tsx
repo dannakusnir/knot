@@ -1,132 +1,117 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import LivePulse from "@/components/ui/LivePulse";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 export default function HomePage() {
   return (
-    <div className="min-h-dvh bg-[#EDE8E2]">
-      {/* Hero */}
-      <section className="flex flex-col items-center justify-center min-h-dvh px-8">
-        {/* Knot icon */}
-        <svg
-          viewBox="0 0 64 64"
-          fill="none"
-          className="h-12 w-12 mb-10 opacity-60"
-        >
-          <path
-            d="M32 10c-8 0-14 6-14 14 0 4.8 2.4 9.2 6 12l8 8 8-8c3.6-2.8 6-7.2 6-12 0-8-6-14-14-14z"
-            stroke="#A5A58D"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M32 54c8 0 14-6 14-14 0-4.8-2.4-9.2-6-12l-8-8-8 8c-3.6 2.8-6 7.2-6 12 0 8 6 14 14 14z"
-            stroke="#A5A58D"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-
-        <h1 className="text-5xl sm:text-6xl font-serif font-medium leading-[1.1] text-center text-[#4A4540] max-w-lg">
-          Collaborations that feel like{" "}
-          <span className="italic text-[#8B9B74]">connections</span>.
-        </h1>
-
-        <p className="text-xl text-[#7A7570] mt-7 text-center max-w-[340px] leading-relaxed">
-          Where local businesses and content creators build real partnerships.
-        </p>
-
-        <Link
-          href="/signup"
-          className="mt-14 flex items-center justify-center w-full max-w-[300px] h-14 rounded-full bg-[#A5A58D] text-white text-base tracking-[0.06em] uppercase transition-all hover:bg-[#8E8E78] active:scale-[0.98]"
-        >
-          Get Started
-        </Link>
-
-        <Link
-          href="/login"
-          className="mt-4 text-base text-[#A09890] tracking-wide hover:text-[#6B705C] transition-colors"
-        >
-          I already have an account
-        </Link>
-      </section>
-
-      {/* Photo grid — symmetric 3 columns */}
-      <section className="px-4 pb-6">
-        <div className="max-w-lg mx-auto grid grid-cols-3 gap-2.5">
-          <div className="rounded-[1.75rem] overflow-hidden aspect-[3/4]">
-            <Image
-              src="/images/mami/0V8A4757.jpg"
-              alt="Mami Cresskill — croissant & coffee"
-              width={500}
-              height={666}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="rounded-[1.75rem] overflow-hidden aspect-[3/4]">
-            <Image
-              src="/images/shawarma/0V8A0364.jpg"
-              alt="Shawarma Delight interior"
-              width={500}
-              height={666}
-              className="w-full h-full object-cover object-center"
-            />
-          </div>
-          <div className="rounded-[1.75rem] overflow-hidden aspect-[3/4]">
-            <Image
-              src="/images/livela/0V8A3711.jpg"
-              alt="Livela Beauty — laser treatment"
-              width={500}
-              height={666}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Divider */}
-      <div className="flex justify-center py-10">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-px bg-[#DDBEA9]" />
-          <div className="w-1.5 h-1.5 rounded-full bg-[#DDBEA9]" />
-          <div className="w-8 h-px bg-[#DDBEA9]" />
-        </div>
+    <div className="min-h-dvh bg-[color:var(--background)]">
+      {/* Top ribbon — editorial masthead */}
+      <div className="border-b border-[color:var(--line)] px-5 py-3 flex items-center justify-between">
+        <span className="font-mono text-[10px] font-bold tracking-[0.25em] text-ink">
+          KN—T
+        </span>
+        <span className="font-mono text-[9px] tracking-[0.2em] text-[color:var(--ink-soft)] hidden sm:inline">
+          CRESSKILL · SPRING VALLEY · NJ·NY · MMXXVI
+        </span>
+        <LivePulse count={217} label="creators" />
       </div>
 
-      {/* What is KNOT */}
-      <section className="px-8 py-8 max-w-md mx-auto text-center">
-        <p className="text-base tracking-[0.3em] uppercase text-[#A5A58D] font-medium mb-6">
-          What is KNOT
+      {/* Hero — editorial fullscreen */}
+      <section className="min-h-[88vh] px-6 pt-16 pb-20 flex flex-col">
+        <SectionEyebrow num="01" label="KNOT · Brand direction" accent />
+
+        <h1 className="mt-6 font-serif font-normal text-[56px] sm:text-[84px] leading-[0.95] tracking-[-0.02em] text-ink">
+          Collaborations<br />
+          that feel like<br />
+          <em className="italic font-medium text-[color:var(--sage-deep)]">
+            connections.
+          </em>
+        </h1>
+
+        <p className="mt-8 font-serif italic text-xl text-[color:var(--ink-mid)] max-w-md leading-relaxed">
+          Where local businesses and content creators build real partnerships.
+          Warm, trackable, and entirely yours.
         </p>
-        <h2 className="text-3xl sm:text-4xl font-serif font-medium leading-[1.3] text-[#4A4540]">
-          A structured system for real collaborations between businesses and creators.
+
+        <div className="mt-auto pt-16 flex flex-col gap-3">
+          <Link
+            href="/signup"
+            className="flex items-center justify-between w-full max-w-[340px] h-14 rounded-full bg-[color:var(--sage-deep)] text-white px-6 transition-all hover:bg-[color:var(--sage)] active:scale-[0.98]"
+          >
+            <span className="font-mono text-[11px] tracking-[0.18em] uppercase font-bold">
+              Get Started
+            </span>
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            href="/login"
+            className="font-mono text-[11px] tracking-[0.18em] uppercase text-[color:var(--ink-soft)] hover:text-ink transition-colors"
+          >
+            I already have an account →
+          </Link>
+        </div>
+      </section>
+
+      {/* Editorial photo module */}
+      <section className="px-4 pb-6">
+        <div className="max-w-3xl mx-auto">
+          <div className="border border-[color:var(--line)] p-3 bg-[color:var(--paper)]">
+            <div className="relative aspect-[4/3] overflow-hidden">
+              <Image
+                src="/images/mami/0V8A4710.jpg"
+                alt="Mami Cresskill — coffee & pastries"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 768px"
+              />
+            </div>
+            <div className="flex items-center justify-between pt-3">
+              <span className="font-mono text-[10px] tracking-[0.2em] text-[color:var(--ink-soft)] uppercase">
+                No. 01 · Mami · Cresskill
+              </span>
+              <span className="font-mono text-[10px] tracking-[0.2em] text-[color:var(--ink-soft)] uppercase">
+                Friday · 6:48 AM
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What is KNOT */}
+      <section className="px-6 py-24 max-w-2xl mx-auto">
+        <SectionEyebrow num="02" label="What is KNOT" accent />
+        <h2 className="mt-5 font-serif text-[40px] sm:text-[56px] leading-[1.02] tracking-[-0.015em] text-ink font-normal">
+          A structured system for <em className="italic text-[color:var(--sage-deep)]">real</em> collaborations between businesses and creators.
         </h2>
       </section>
 
-      {/* Steps */}
-      <section className="px-6 py-10">
-        <div className="max-w-sm mx-auto space-y-3">
+      {/* Steps — hairline list */}
+      <section className="px-6 pb-20 max-w-xl mx-auto">
+        <SectionEyebrow num="03" label="The process" />
+        <div className="mt-6 border-t border-[color:var(--line)]">
           {[
-            { num: "01", title: "Discovery", desc: "Browse local offers from verified businesses near you." },
-            { num: "02", title: "Create Knot", desc: "Found a match? Apply with your pitch." },
+            { num: "01", title: "Discover", desc: "Browse local offers from verified businesses near you." },
+            { num: "02", title: "Apply", desc: "Found a match? Send your pitch." },
             { num: "03", title: "Connect", desc: "Business approves. The collaboration begins." },
             { num: "04", title: "Deliver", desc: "Create content. Upload proof. Content goes live." },
             { num: "05", title: "Trust", desc: "Both sides rate. Your reputation grows with every Knot." },
-          ].map((step, i) => (
+          ].map((step) => (
             <div
-              key={i}
-              className="flex items-start gap-4 rounded-2xl bg-[#F7F4F0] px-5 py-5"
+              key={step.num}
+              className="grid grid-cols-[auto_1fr] gap-6 py-6 border-b border-[color:var(--line)]"
             >
-              <div className="shrink-0 w-9 h-9 rounded-full bg-[#DDBEA9]/30 flex items-center justify-center mt-0.5">
-                <span className="text-sm font-bold text-[#CB997E]">
-                  {step.num}
-                </span>
-              </div>
+              <span className="font-mono text-[10px] font-bold tracking-[0.18em] text-[color:var(--sage-deep)] mt-1.5">
+                § {step.num}
+              </span>
               <div>
-                <h3 className="text-xl font-semibold text-[#4A4540]">{step.title}</h3>
-                <p className="text-base text-[#7A7570] mt-1 leading-relaxed">{step.desc}</p>
+                <h3 className="font-serif text-2xl font-medium text-ink leading-tight">
+                  {step.title}
+                </h3>
+                <p className="text-[15px] text-[color:var(--ink-mid)] mt-1.5 leading-relaxed">
+                  {step.desc}
+                </p>
               </div>
             </div>
           ))}
@@ -134,70 +119,74 @@ export default function HomePage() {
       </section>
 
       {/* Full photo */}
-      <section className="px-4 py-6">
-        <div className="max-w-lg mx-auto rounded-[1.75rem] overflow-hidden aspect-[16/10]">
-          <Image
-            src="/images/mami/0V8A4710.jpg"
-            alt="Mami Cresskill — coffee & pastries"
-            width={1200}
-            height={750}
-            className="w-full h-full object-cover object-center"
-          />
+      <section className="px-4 pb-6">
+        <div className="max-w-3xl mx-auto">
+          <div className="border border-[color:var(--line)] p-3 bg-[color:var(--paper)]">
+            <div className="relative aspect-[16/10] overflow-hidden">
+              <Image
+                src="/images/shawarma/0V8A0553.jpg"
+                alt="Shawarma Delight"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 768px"
+              />
+            </div>
+            <div className="flex items-center justify-between pt-3">
+              <span className="font-mono text-[10px] tracking-[0.2em] text-[color:var(--ink-soft)] uppercase">
+                No. 02 · Shawarma Delight · Spring Valley
+              </span>
+              <span className="font-mono text-[10px] tracking-[0.2em] text-[color:var(--ink-soft)] uppercase">
+                Active Knot
+              </span>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Statement — olive green */}
-      <section className="px-6 py-10">
-        <div className="max-w-sm mx-auto rounded-[1.75rem] bg-[#6B705C] px-8 py-12 text-center">
-          <p className="text-base text-[#DDBEA9] tracking-[0.2em] uppercase mb-5">
-            Built on trust
-          </p>
-          <p className="text-2xl font-serif font-medium leading-[1.4] text-[#EDE8E2]">
-            Every creator is vetted.
-            Every collaboration is tracked.
-            Trust is earned.
-          </p>
-        </div>
+      {/* Statement — warm cream, italic pull quote */}
+      <section className="px-6 py-24 max-w-xl mx-auto">
+        <SectionEyebrow label="Built on trust" accent />
+        <p className="mt-6 font-serif italic text-3xl sm:text-[42px] leading-[1.25] text-ink font-normal">
+          Every creator is vetted.<br />
+          Every collaboration is tracked.<br />
+          <span className="text-[color:var(--sage-deep)]">Trust is earned.</span>
+        </p>
       </section>
 
       {/* For who */}
-      <section className="px-4 py-12">
-        <div className="max-w-sm mx-auto grid grid-cols-2 gap-3">
-          <div className="rounded-[1.75rem] overflow-hidden bg-[#F7F4F0]">
-            <div className="aspect-[1/1] overflow-hidden">
+      <section className="px-4 pb-20">
+        <div className="max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="border border-[color:var(--line)] bg-[color:var(--paper)]">
+            <div className="relative aspect-[4/5] overflow-hidden">
               <Image
                 src="/images/shawarma/0V8A0359.jpg"
                 alt="Shawarma Delight"
-                width={500}
-                height={500}
-                className="w-full h-full object-cover object-center"
+                fill
+                className="object-cover object-center"
+                sizes="(max-width: 640px) 100vw, 50vw"
               />
             </div>
             <div className="p-5">
-              <p className="text-sm text-[#CB997E] font-semibold tracking-[0.15em] uppercase mb-2">
-                For Businesses
-              </p>
-              <p className="text-base font-semibold text-[#4A4540] leading-snug">
+              <SectionEyebrow num="A" label="For Businesses" accent />
+              <p className="mt-3 font-serif text-xl font-medium text-ink leading-snug">
                 Real content from trusted local creators.
               </p>
             </div>
           </div>
 
-          <div className="rounded-[1.75rem] overflow-hidden bg-[#F7F4F0]">
-            <div className="aspect-[1/1] overflow-hidden">
+          <div className="border border-[color:var(--line)] bg-[color:var(--paper)]">
+            <div className="relative aspect-[4/5] overflow-hidden">
               <Image
                 src="/images/livela/0V8A3289.jpg"
-                alt="Livela Beauty — brow treatment"
-                width={500}
-                height={500}
-                className="w-full h-full object-cover object-top"
+                alt="Livela Beauty"
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 640px) 100vw, 50vw"
               />
             </div>
             <div className="p-5">
-              <p className="text-sm text-[#A5A58D] font-semibold tracking-[0.15em] uppercase mb-2">
-                For Creators
-              </p>
-              <p className="text-base font-semibold text-[#4A4540] leading-snug">
+              <SectionEyebrow num="B" label="For Creators" accent />
+              <p className="mt-3 font-serif text-xl font-medium text-ink leading-snug">
                 Real opportunities. Build your portfolio.
               </p>
             </div>
@@ -206,24 +195,32 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="px-8 py-20 text-center">
-        <h3 className="text-3xl sm:text-4xl font-serif font-medium leading-[1.25] text-[#4A4540] mb-8">
-          Your first Knot<br />is waiting.
+      <section className="px-6 py-24 text-center border-t border-[color:var(--line)]">
+        <SectionEyebrow label="Ready?" accent className="text-center" />
+        <h3 className="mt-6 font-serif text-[42px] sm:text-[64px] leading-[0.98] tracking-[-0.02em] text-ink font-normal">
+          Your first Knot<br />
+          <em className="italic text-[color:var(--sage-deep)]">is waiting.</em>
         </h3>
         <Link
           href="/signup"
-          className="inline-flex items-center justify-center h-14 rounded-full bg-[#A5A58D] text-white text-base tracking-[0.06em] uppercase px-10 transition-all hover:bg-[#8E8E78] active:scale-[0.98]"
+          className="mt-10 inline-flex items-center justify-center h-14 rounded-full bg-[color:var(--sage-deep)] text-white px-10 transition-all hover:bg-[color:var(--sage)] active:scale-[0.98] gap-3"
         >
-          Create your account
-          <ArrowRight className="h-5 w-5 ml-2" />
+          <span className="font-mono text-[11px] tracking-[0.18em] uppercase font-bold">
+            Create your account
+          </span>
+          <ArrowRight className="h-4 w-4" />
         </Link>
       </section>
 
       {/* Footer */}
-      <footer className="py-10 text-center">
-        <p className="text-base tracking-[0.3em] uppercase text-[#C4BBB2]">
-          KNOT
-        </p>
+      <footer className="border-t border-[color:var(--line)] py-8 px-5 flex items-center justify-between">
+        <span className="font-mono text-[10px] tracking-[0.3em] text-[color:var(--ink-soft)] font-bold">
+          K · N · O · T
+        </span>
+        <LivePulse count={217} label="creators online" />
+        <span className="font-mono text-[10px] tracking-[0.2em] text-[color:var(--ink-soft)] hidden sm:inline">
+          VOL. 01 · MMXXVI
+        </span>
       </footer>
     </div>
   );

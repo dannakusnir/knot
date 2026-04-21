@@ -14,15 +14,15 @@ export default function Header({
   notificationHref = "/c/notifications",
 }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-5 bg-[#EDE8E2]/95 backdrop-blur-sm border-b border-[#DDD7D0]/50">
+    <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-5 bg-[color:var(--background)]/95 backdrop-blur-sm border-b border-[color:var(--line)]">
       <KnotLogo size="sm" />
       <Link
         href={notificationHref}
-        className="relative rounded-full p-2 hover:bg-[#E8E3DD] transition-colors"
+        className="relative rounded-full p-2 hover:bg-[color:var(--paper)] transition-colors"
       >
-        <Bell className="h-5 w-5 text-[#6B705C]" />
+        <Bell className="h-[18px] w-[18px] text-[color:var(--ink-mid)]" strokeWidth={1.5} />
         {notificationCount > 0 && (
-          <span className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#CB997E] text-[10px] font-bold text-white">
+          <span className="absolute top-0.5 right-0.5 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-[color:var(--clay)] text-[9px] font-mono font-bold text-white">
             {notificationCount > 9 ? "9+" : notificationCount}
           </span>
         )}

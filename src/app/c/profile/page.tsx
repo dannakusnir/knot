@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireRole } from "@/lib/auth";
-import { Badge, Avatar } from "@/components/ui";
-import { AtSign, MapPin, CheckCircle, Shield, Star, Link2, TrendingUp } from "lucide-react";
+import { Avatar, SectionEyebrow } from "@/components/ui";
+import { AtSign, MapPin, CheckCircle, Shield } from "lucide-react";
 import SignOutButton from "@/components/layout/SignOutButton";
 
 export default async function CreatorProfilePage() {
@@ -22,10 +22,19 @@ export default async function CreatorProfilePage() {
 
   if (!profile || !creatorProfile) return null;
 
+  const trustPct = Math.min(creatorProfile.trust_score * 20, 100);
+
   return (
-    <div className="min-h-dvh bg-[#EDE8E2]">
-      {/* Profile header with gradient */}
-      <div className="bg-gradient-to-b from-[#A5A58D]/20 to-[#EDE8E2] px-5 pt-8 pb-6">
+    <div className="min-h-dvh bg-[color:var(--background)]">
+      {/* Editorial masthead */}
+      <div className="px-5 pt-7 pb-6 border-b border-[color:var(--line)]">
+        <div className="flex items-center justify-between mb-5">
+          <SectionEyebrow num="01" label="Profile" accent />
+          <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-[color:var(--ink-soft)]">
+            MEMBER · MMXXVI
+          </span>
+        </div>
+
         <div className="flex items-center gap-4">
           <div className="relative">
             <Avatar
@@ -34,19 +43,19 @@ export default async function CreatorProfilePage() {
               size="xl"
             />
             {creatorProfile.verified && (
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#7FC8A9] flex items-center justify-center ring-2 ring-[#EDE8E2]">
-                <CheckCircle className="h-3.5 w-3.5 text-white" />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[color:var(--sage-deep)] flex items-center justify-center ring-2 ring-[color:var(--background)]">
+                <CheckCircle className="h-3.5 w-3.5 text-white" strokeWidth={2} />
               </div>
             )}
           </div>
           <div className="flex-1">
-            <h1 className="text-2xl font-serif font-medium text-[#3D3229]">
+            <h1 className="font-serif text-[32px] font-normal text-ink leading-[1] tracking-[-0.01em]">
               {profile.full_name}
+              <span className="text-[color:var(--clay)]">.</span>
             </h1>
-            <p className="text-sm text-[#8A8078]">{profile.email}</p>
             {creatorProfile.city && (
-              <p className="text-sm text-[#8A8078] flex items-center gap-1 mt-0.5">
-                <MapPin className="h-3.5 w-3.5" />
+              <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[color:var(--ink-soft)] flex items-center gap-1 mt-2">
+                <MapPin className="h-3 w-3" strokeWidth={2} />
                 {creatorProfile.city}
               </p>
             )}
@@ -54,13 +63,18 @@ export default async function CreatorProfilePage() {
         </div>
 
         {creatorProfile.bio && (
-          <p className="text-[15px] text-[#6B6560] mt-4 leading-relaxed">{creatorProfile.bio}</p>
+          <p className="font-serif italic text-[17px] text-[color:var(--ink-mid)] mt-5 leading-relaxed">
+            {creatorProfile.bio}
+          </p>
         )}
 
         {creatorProfile.categories?.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-3">
+          <div className="flex flex-wrap gap-1.5 mt-4">
             {creatorProfile.categories.map((cat: string) => (
-              <span key={cat} className="px-3 py-1 rounded-full bg-white/70 text-[#6B705C] text-xs font-semibold">
+              <span
+                key={cat}
+                className="font-mono text-[9px] font-bold tracking-[0.18em] uppercase text-[color:var(--sage-deep)] border border-[color:var(--sage)]/30 bg-[color:var(--sage-soft)] px-2.5 py-1"
+              >
                 {cat}
               </span>
             ))}
@@ -68,79 +82,100 @@ export default async function CreatorProfilePage() {
         )}
       </div>
 
-      <div className="px-4 pb-24 space-y-4">
-        {/* Stats */}
-        <div className="flex gap-3">
-          <div className="flex-1 rounded-2xl bg-[#7FC8A9]/12 p-4 text-center">
-            <Link2 className="h-4 w-4 text-[#5BA88A] mx-auto mb-1.5" />
-            <p className="text-2xl font-semibold text-[#3D3229]">{creatorProfile.total_knots}</p>
-            <p className="text-xs text-[#5BA88A] font-medium">Knots</p>
-          </div>
-          <div className="flex-1 rounded-2xl bg-[#DDBEA9]/20 p-4 text-center">
-            <Star className="h-4 w-4 text-[#CB997E] mx-auto mb-1.5" />
-            <p className="text-2xl font-semibold text-[#3D3229]">
-              {creatorProfile.avg_rating > 0 ? creatorProfile.avg_rating.toFixed(1) : "--"}
-            </p>
-            <p className="text-xs text-[#CB997E] font-medium">Rating</p>
-          </div>
-          <div className="flex-1 rounded-2xl bg-[#A5A58D]/12 p-4 text-center">
-            <TrendingUp className="h-4 w-4 text-[#6B705C] mx-auto mb-1.5" />
-            <p className="text-2xl font-semibold text-[#3D3229]">
-              {creatorProfile.completion_rate > 0
-                ? `${Math.round(creatorProfile.completion_rate * 100)}%`
-                : "--"}
-            </p>
-            <p className="text-xs text-[#6B705C] font-medium">Complete</p>
-          </div>
-        </div>
+      <div className="px-5 pt-7 pb-24 space-y-8">
+        {/* Stats — definition list, not pills */}
+        <section>
+          <SectionEyebrow num="02" label="Stats" />
+          <dl className="mt-4 grid grid-cols-3 divide-x divide-[color:var(--line)] border-y border-[color:var(--line)]">
+            <div className="py-5 px-2 text-center">
+              <dd className="font-serif text-[36px] font-normal text-ink leading-none tracking-[-0.02em]">
+                {creatorProfile.total_knots}
+              </dd>
+              <dt className="font-mono text-[9px] font-bold tracking-[0.2em] uppercase text-[color:var(--ink-soft)] mt-2">
+                Knots
+              </dt>
+            </div>
+            <div className="py-5 px-2 text-center">
+              <dd className="font-serif text-[36px] font-normal text-ink leading-none tracking-[-0.02em]">
+                {creatorProfile.avg_rating > 0 ? creatorProfile.avg_rating.toFixed(1) : "—"}
+              </dd>
+              <dt className="font-mono text-[9px] font-bold tracking-[0.2em] uppercase text-[color:var(--ink-soft)] mt-2">
+                Rating
+              </dt>
+            </div>
+            <div className="py-5 px-2 text-center">
+              <dd className="font-serif text-[36px] font-normal text-ink leading-none tracking-[-0.02em]">
+                {creatorProfile.completion_rate > 0
+                  ? `${Math.round(creatorProfile.completion_rate * 100)}%`
+                  : "—"}
+              </dd>
+              <dt className="font-mono text-[9px] font-bold tracking-[0.2em] uppercase text-[color:var(--ink-soft)] mt-2">
+                Complete
+              </dt>
+            </div>
+          </dl>
+        </section>
 
-        {/* Trust Score */}
-        <div className="rounded-2xl bg-white p-5 space-y-3">
-          <div className="flex items-center gap-2">
-            <Shield className="h-4 w-4 text-[#6B705C]" />
-            <p className="text-sm font-semibold text-[#3D3229]">Trust Score</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <p className="text-3xl font-semibold text-[#3D3229]">
-              {creatorProfile.trust_score.toFixed(1)}
-            </p>
-            <div className="flex-1">
-              <div className="h-3 rounded-full bg-[#EDE8E2] overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#A5A58D] to-[#7FC8A9] transition-all"
-                  style={{ width: `${Math.min(creatorProfile.trust_score * 20, 100)}%` }}
-                />
-              </div>
+        {/* Trust Score — hero italic numeral */}
+        <section>
+          <SectionEyebrow num="03" label="Trust Score" accent />
+          <div className="mt-4">
+            <div className="flex items-baseline gap-4">
+              <Shield className="h-5 w-5 text-[color:var(--sage-deep)] mb-1" strokeWidth={1.5} />
+              <p className="font-serif italic text-[64px] font-normal text-ink leading-none tracking-[-0.03em]">
+                {creatorProfile.trust_score.toFixed(1)}
+              </p>
+              <p className="font-mono text-[10px] tracking-[0.18em] uppercase text-[color:var(--ink-soft)] mb-2">
+                / 5.0 earned
+              </p>
+            </div>
+            <div className="mt-4 h-[2px] bg-[color:var(--line)]">
+              <div
+                className="h-full bg-[color:var(--sage-deep)] transition-all"
+                style={{ width: `${trustPct}%` }}
+              />
             </div>
           </div>
-        </div>
+        </section>
 
         {/* Social */}
-        <div className="rounded-2xl bg-white p-5 space-y-3">
-          <p className="text-sm font-semibold text-[#3D3229]">Social</p>
-          {creatorProfile.instagram_handle && (
-            <div className="flex items-center gap-3 text-[15px]">
-              <div className="w-8 h-8 rounded-full bg-[#DDBEA9]/20 flex items-center justify-center">
-                <AtSign className="h-4 w-4 text-[#CB997E]" />
+        <section>
+          <SectionEyebrow num="04" label="Presence" />
+          <dl className="mt-4 border-y border-[color:var(--line)] divide-y divide-[color:var(--line)]">
+            {creatorProfile.instagram_handle && (
+              <div className="flex items-center justify-between py-4">
+                <dt className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-[color:var(--ink-soft)] flex items-center gap-2">
+                  <AtSign className="h-3 w-3" strokeWidth={2} />
+                  Instagram
+                </dt>
+                <dd className="font-serif italic text-[17px] text-ink">
+                  @{creatorProfile.instagram_handle}
+                </dd>
               </div>
-              <span className="text-[#3D3229]">@{creatorProfile.instagram_handle}</span>
-            </div>
-          )}
-          {creatorProfile.tiktok_handle && (
-            <div className="flex items-center gap-3 text-[15px]">
-              <div className="w-8 h-8 rounded-full bg-[#A5A58D]/15 flex items-center justify-center">
-                <AtSign className="h-4 w-4 text-[#6B705C]" />
+            )}
+            {creatorProfile.tiktok_handle && (
+              <div className="flex items-center justify-between py-4">
+                <dt className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-[color:var(--ink-soft)] flex items-center gap-2">
+                  <AtSign className="h-3 w-3" strokeWidth={2} />
+                  TikTok
+                </dt>
+                <dd className="font-serif italic text-[17px] text-ink">
+                  @{creatorProfile.tiktok_handle}
+                </dd>
               </div>
-              <span className="text-[#3D3229]">@{creatorProfile.tiktok_handle}</span>
-              <span className="text-xs text-[#8A8078]">TikTok</span>
-            </div>
-          )}
-          {creatorProfile.follower_count > 0 && (
-            <p className="text-sm text-[#8A8078] pl-11">
-              {creatorProfile.follower_count.toLocaleString()} followers
-            </p>
-          )}
-        </div>
+            )}
+            {creatorProfile.follower_count > 0 && (
+              <div className="flex items-center justify-between py-4">
+                <dt className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-[color:var(--ink-soft)]">
+                  Followers
+                </dt>
+                <dd className="font-serif text-[17px] text-ink">
+                  {creatorProfile.follower_count.toLocaleString()}
+                </dd>
+              </div>
+            )}
+          </dl>
+        </section>
 
         {/* Sign Out */}
         <SignOutButton />

@@ -1,41 +1,89 @@
 @import "tailwindcss";
 
 :root {
+  /* BC · Editorial + Verdant — KNOT 2.0 tokens */
+
+  /* Surface */
   --background: #EDE8E2;
-  --foreground: #4A4540;
+  --paper: #F7F4F0;
+  --cream: #FAF7F2;
   --card: #F7F4F0;
-  --primary: #6B8F71;
-  --primary-hover: #5A7A60;
-  --secondary: #DDBEA9;
-  --secondary-hover: #CB997E;
-  --muted: #E8E3DD;
-  --muted-foreground: #A09890;
-  --border: #DDD7D0;
-  --destructive: #E07A5F;
-  --success: #4ECDC4;
-  --warning: #FFB347;
-  --info: #6C9BD2;
-  --accent: #FF6B6B;
+
+  /* Ink hierarchy — warm browns, never pure black */
+  --foreground: #3D3229;
+  --ink: #3D3229;
+  --ink-mid: #6B6560;
+  --ink-soft: #8A8078;
+  --ink-faint: #C4BBB2;
+
+  /* Lines — hairlines */
+  --line: #DDD4C6;
+  --border: #DDD4C6;
+
+  /* Sage forward (primary — BC direction) */
+  --sage: #6B8F71;
+  --sage-deep: #4F6F55;
+  --sage-soft: #E8EFE9;
+  --primary: var(--sage);
+  --primary-hover: var(--sage-deep);
+
+  /* Clay (secondary accent — pill badges, period dots) */
+  --clay: #CB997E;
+  --clay-soft: #F4EADB;
+  --secondary: var(--clay);
+  --secondary-hover: #B8866B;
+
+  /* Muted */
+  --muted: #EDE8E2;
+  --muted-foreground: #8A8078;
+
+  /* Semantic — warm family */
+  --destructive: #A84C3E;
+  --destructive-soft: #F2E0DC;
+  --success: #4F6F55;
+  --success-soft: #E8EFE9;
+  --warning: #B8833A;
+  --info: #5C7A8A;
+
+  --pulse: var(--clay);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
+  --color-paper: var(--paper);
+  --color-cream: var(--cream);
+
+  --color-ink: var(--ink);
+  --color-ink-mid: var(--ink-mid);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-secondary: var(--secondary);
   --color-secondary-hover: var(--secondary-hover);
+  --color-sage: var(--sage);
+  --color-sage-deep: var(--sage-deep);
+  --color-sage-soft: var(--sage-soft);
+  --color-clay: var(--clay);
+  --color-clay-soft: var(--clay-soft);
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+
+  --color-line: var(--line);
   --color-border: var(--border);
+
   --color-destructive: var(--destructive);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-info: var(--info);
-  --color-accent: var(--accent);
+
   --font-sans: var(--font-quicksand);
   --font-serif: var(--font-lora);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 body {
@@ -44,10 +92,24 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif), Georgia, serif;
+}
+
+.eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.hairline {
+  border-top: 1px solid var(--line);
 }
 
 ::-webkit-scrollbar {
@@ -59,7 +121,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
+  background: var(--line);
   border-radius: 2px;
 }
 
@@ -76,4 +138,22 @@ h1, h2, h3, h4, h5, h6 {
 
 .animate-bounce-in {
   animation: bounce-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes live-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(203, 153, 126, 0.55); }
+  50% { box-shadow: 0 0 0 5px rgba(203, 153, 126, 0); }
+}
+
+.animate-live-pulse {
+  animation: live-pulse 2s ease-in-out infinite;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out;
 }

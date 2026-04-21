@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Quicksand, Lora } from "next/font/google";
+import { Quicksand, Lora, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
@@ -14,6 +14,12 @@ const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -44,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${quicksand.variable} ${lora.variable}`}>
+    <html lang="en" className={`${quicksand.variable} ${lora.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="apple-touch-icon" href="/icon-192.svg" />
       </head>

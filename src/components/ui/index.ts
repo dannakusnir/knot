@@ -11,3 +11,5 @@ export { default as Skeleton } from "./Skeleton";
 export { default as EmptyState } from "./EmptyState";
 export { ToastProvider, useToast } from "./Toast";
 export { default as KnotLogo } from "./KnotLogo";
+export { default as LivePulse } from "./LivePulse";
+export { default as SectionEyebrow } from "./SectionEyebrow";
