@@ -26,7 +26,7 @@ export default function MarkReadButton({ ids }: MarkReadButtonProps) {
     <button
       onClick={handleMarkAll}
       disabled={loading}
-      className="text-sm font-medium text-[#6B705C] hover:text-[#4A4540] transition-colors disabled:opacity-50"
+      className="font-mono text-[10px] font-bold tracking-[0.18em] uppercase text-[color:var(--clay-deep)] hover:text-[color:var(--ink)] transition-colors disabled:opacity-50"
     >
       Mark all read
     </button>

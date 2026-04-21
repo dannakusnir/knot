@@ -14,11 +14,11 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const inputId = id || label?.toLowerCase().replace(/\s+/g, "-");
 
     return (
-      <div className="space-y-1.5">
+      <div className="space-y-[7px]">
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-sm font-medium text-foreground"
+            className="block font-sans text-[11.5px] font-semibold tracking-[0.02em] text-[color:var(--ink-mid)]"
           >
             {label}
           </label>
@@ -28,8 +28,10 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             id={inputId}
             className={cn(
-              "w-full appearance-none rounded-xl border border-border bg-card px-4 py-2.5 pr-10 text-sm text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary",
-              error && "border-destructive focus:ring-destructive/50",
+              "w-full appearance-none rounded-[14px] border bg-[color:var(--surface)] px-4 h-12 pr-10 text-[14px] font-medium text-[color:var(--ink)] transition-colors focus:outline-none focus:ring-2",
+              error
+                ? "border-[color:var(--destructive)] focus:ring-[color:var(--destructive)]/30"
+                : "border-[color:var(--line)] focus:ring-[color:var(--sage)]/30 focus:border-[color:var(--sage)]/40",
               className
             )}
             {...props}
@@ -45,9 +47,16 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
               </option>
             ))}
           </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          <ChevronDown
+            className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[color:var(--ink-soft)] pointer-events-none"
+            strokeWidth={1.6}
+          />
         </div>
-        {error && <p className="text-xs text-destructive">{error}</p>}
+        {error && (
+          <p className="font-sans text-[11.5px] text-[color:var(--destructive)] font-medium mt-[6px]">
+            {error}
+          </p>
+        )}
       </div>
     );
   }

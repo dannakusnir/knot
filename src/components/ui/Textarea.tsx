@@ -12,11 +12,11 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const inputId = id || label?.toLowerCase().replace(/\s+/g, "-");
 
     return (
-      <div className="space-y-1.5">
+      <div className="space-y-[7px]">
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-sm font-medium text-foreground"
+            className="block font-sans text-[11.5px] font-semibold tracking-[0.02em] text-[color:var(--ink-mid)]"
           >
             {label}
           </label>
@@ -25,14 +25,20 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           id={inputId}
           className={cn(
-            "w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none",
-            error && "border-destructive focus:ring-destructive/50",
+            "w-full rounded-[14px] border bg-[color:var(--surface)] px-4 py-3 text-[14px] font-medium text-[color:var(--ink)] placeholder:text-[color:var(--ink-faint)] transition-colors focus:outline-none focus:ring-2 resize-none leading-[1.5]",
+            error
+              ? "border-[color:var(--destructive)] focus:ring-[color:var(--destructive)]/30"
+              : "border-[color:var(--line)] focus:ring-[color:var(--sage)]/30 focus:border-[color:var(--sage)]/40",
             className
           )}
           rows={4}
           {...props}
         />
-        {error && <p className="text-xs text-destructive">{error}</p>}
+        {error && (
+          <p className="font-sans text-[11.5px] text-[color:var(--destructive)] font-medium mt-[6px]">
+            {error}
+          </p>
+        )}
       </div>
     );
   }

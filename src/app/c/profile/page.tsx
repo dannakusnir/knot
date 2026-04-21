@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireRole } from "@/lib/auth";
-import { Avatar } from "@/components/ui";
+import { Avatar, ErrorState } from "@/components/ui";
 import { AtSign, CheckCircle, Settings } from "lucide-react";
 import SignOutButton from "@/components/layout/SignOutButton";
 import Image from "next/image";
@@ -23,7 +23,15 @@ export default async function CreatorProfilePage() {
     .eq("id", user.id)
     .single();
 
-  if (!profile || !creatorProfile) return null;
+  if (!profile || !creatorProfile) {
+    return (
+      <ErrorState
+        title="We couldn't load your profile."
+        description="Something on our end hiccuped. Try again — if it keeps happening, sign out and back in."
+        action={{ label: "Try again", href: "/c/profile" }}
+      />
+    );
+  }
 
   // Find completed knots to show as "recent work"
   const { data: completedKnots } = await supabase

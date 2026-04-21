@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { requireRole } from "@/lib/auth";
-import { Avatar } from "@/components/ui";
+import { Avatar, ErrorState } from "@/components/ui";
 import { MapPin, Globe, Settings } from "lucide-react";
 import SignOutButton from "@/components/layout/SignOutButton";
 
@@ -20,7 +20,15 @@ export default async function BusinessProfilePage() {
     .eq("id", user.id)
     .single();
 
-  if (!profile || !businessProfile) return null;
+  if (!profile || !businessProfile) {
+    return (
+      <ErrorState
+        title="We couldn't load your business profile."
+        description="Something on our end hiccuped. Try again — if it keeps happening, sign out and back in."
+        action={{ label: "Try again", href: "/b/profile" }}
+      />
+    );
+  }
 
   const stats = [
     {

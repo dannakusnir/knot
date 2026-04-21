@@ -9,6 +9,7 @@ export { default as StarRating } from "./StarRating";
 export { default as Modal } from "./Modal";
 export { default as Skeleton } from "./Skeleton";
 export { default as EmptyState } from "./EmptyState";
+export { default as ErrorState } from "./ErrorState";
 export { ToastProvider, useToast } from "./Toast";
 export { default as KnotLogo } from "./KnotLogo";
 export { default as LivePulse } from "./LivePulse";

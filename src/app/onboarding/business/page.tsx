@@ -125,7 +125,11 @@ export default function BusinessOnboardingPage() {
           />
 
           {error && (
-            <p className="text-sm text-destructive text-center">{error}</p>
+            <div className="rounded-xl bg-[color:var(--destructive-soft)] border border-[color:var(--destructive)]/20 px-4 py-3">
+              <p className="text-[13px] text-[color:var(--destructive)] text-center font-medium">
+                {error}
+              </p>
+            </div>
           )}
 
           <Button type="submit" loading={loading} className="w-full" size="lg">

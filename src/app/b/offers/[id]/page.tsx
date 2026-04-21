@@ -159,7 +159,7 @@ export default async function BusinessOfferDetailPage({ params }: Props) {
       )}
 
       {/* Pending applicants */}
-      <section className="px-5 mt-8">
+      <section id="applicants" className="px-5 mt-8 scroll-mt-20">
         <div className="flex items-center justify-between">
           <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--clay-deep)]">
             PENDING · {pendingApps.length}

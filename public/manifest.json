@@ -4,8 +4,8 @@
   "description": "Collaborations that feel like connections",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#EDE8E2",
-  "theme_color": "#EDE8E2",
+  "background_color": "#EBE9DF",
+  "theme_color": "#EBE9DF",
   "orientation": "portrait",
   "icons": [
     {

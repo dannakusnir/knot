@@ -146,7 +146,17 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
 
 .pb-safe {
-  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+  padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+}
+
+/* Content wrappers for pages that use BottomNav — clears the 64px nav + safe-area */
+.pb-nav {
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+}
+
+/* Sticky top spacer on pages where the top bar overlays content */
+.pt-safe {
+  padding-top: max(env(safe-area-inset-top), 3rem);
 }
 
 @keyframes bounce-in {

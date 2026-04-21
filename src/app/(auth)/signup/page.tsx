@@ -44,23 +44,43 @@ export default function SignupPage() {
 
     if (data.user) {
       if (data.user.identities?.length === 0) {
-        setError("This email is already registered. Try signing in.");
+        setError("This email is already here — try signing in instead.");
         setLoading(false);
         return;
       }
 
-      const { error: profileError } = await supabase.from("profiles").insert({
-        id: data.user.id,
-        role,
-        full_name: name,
-        email: email.trim(),
-      });
+      // Check if profile already exists (user signed up before but didn't finish)
+      const { data: existingProfile } = await supabase
+        .from("profiles")
+        .select("id, role")
+        .eq("id", data.user.id)
+        .maybeSingle();
 
-      if (profileError) {
-        console.log("Profile insert:", profileError.message);
+      if (!existingProfile) {
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .insert({
+            id: data.user.id,
+            role,
+            full_name: name,
+            email: email.trim(),
+          });
+
+        if (profileError) {
+          setError("We couldn't finish setting up your account. Try again.");
+          setLoading(false);
+          return;
+        }
       }
 
-      router.push(`/onboarding/${role}`);
+      // Route based on role: creators to onboarding, businesses to onboarding
+      const destination = existingProfile
+        ? existingProfile.role === "creator"
+          ? "/c/explore"
+          : "/b/dashboard"
+        : `/onboarding/${role}`;
+
+      router.push(destination);
       router.refresh();
     } else {
       setError("Something went wrong. Please try again.");

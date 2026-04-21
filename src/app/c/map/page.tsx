@@ -1,6 +1,6 @@
 import { requireRole } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { Card, EmptyState } from "@/components/ui";
+import { EmptyState } from "@/components/ui";
 import { MapPin } from "lucide-react";
 import MapView from "@/components/map/MapView";
 
@@ -12,23 +12,23 @@ export default async function MapPage() {
 
   if (!mapboxToken) {
     return (
-      <div className="px-4 py-6 space-y-6">
-        <div>
-          <h1 className="text-2xl font-serif font-semibold">Map</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Discover offers near you
-          </p>
+      <div className="min-h-dvh bg-[color:var(--cream)]">
+        <div className="px-5 pt-7 pb-3">
+          <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--ink-soft)]">
+            NEARBY
+          </span>
+          <h1 className="mt-2 font-serif italic text-[40px] font-normal leading-[0.95] tracking-[-0.025em] text-[color:var(--ink)]">
+            Map.
+          </h1>
         </div>
-        <Card className="flex flex-col items-center justify-center py-16 space-y-4">
-          <div className="w-16 h-16 rounded-full bg-secondary/50 flex items-center justify-center">
-            <MapPin className="h-7 w-7 text-primary" />
-          </div>
+        <div className="pt-4">
           <EmptyState
             icon={MapPin}
-            title="Map coming soon"
-            description="We're building an interactive map to help you find offers near you. Stay tuned!"
+            tone="sage"
+            title="Soon."
+            description="The map is on the way. For now, browse offers in Discover."
           />
-        </Card>
+        </div>
       </div>
     );
   }
@@ -79,13 +79,14 @@ export default async function MapPage() {
   const mapOffers = Array.from(businessMap.values());
 
   return (
-    <div className="fixed inset-0 top-14 bottom-16 bg-[#EDE8E2]">
+    <div className="fixed inset-0 top-14 bottom-16 bg-[color:var(--cream)]">
       {mapOffers.length === 0 ? (
         <div className="flex items-center justify-center h-full px-4">
           <EmptyState
             icon={MapPin}
-            title="No offers on map"
-            description="Businesses need to add their location for offers to show on the map"
+            tone="sage"
+            title="No pins yet"
+            description="Businesses need to add their location before offers show on the map."
           />
         </div>
       ) : (
