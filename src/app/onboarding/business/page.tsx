@@ -58,84 +58,106 @@ export default function BusinessOnboardingPage() {
   }
 
   return (
-    <div className="min-h-dvh bg-background px-4 py-8">
-      <div className="mx-auto max-w-sm">
-        <div className="flex justify-center mb-8">
-          <KnotLogo size="md" />
-        </div>
+    <div className="min-h-dvh bg-[color:var(--cream)] flex flex-col">
+      {/* Top */}
+      <div className="flex items-center justify-between px-5 pt-14 pb-6">
+        <span className="font-mono text-[10px] font-bold tracking-[0.22em] text-[color:var(--ink-soft)]">
+          SETUP
+        </span>
+        <KnotLogo variant="mark" size="sm" />
+      </div>
 
-        <div className="mb-6">
-          <h2 className="text-xl font-serif font-semibold">
-            Set up your business
-          </h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Quick setup — takes less than 2 minutes
-          </p>
-        </div>
+      {/* Title */}
+      <div className="px-5 mb-8">
+        <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--clay-deep)]">
+          YOUR SPOT
+        </span>
+        <h1 className="mt-2 font-serif italic text-[36px] font-normal leading-[1] tracking-[-0.02em] text-[color:var(--ink)]">
+          Tell us about<br />your place.
+        </h1>
+        <p className="mt-3 font-serif italic text-[14.5px] leading-[1.5] text-[color:var(--ink-mid)]">
+          Under two minutes. Creators see this first.
+        </p>
+      </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Business Name"
-            placeholder="e.g. Daily Grind Cafe"
-            value={businessName}
-            onChange={(e) => setBusinessName(e.target.value)}
-            required
-          />
+      <form
+        onSubmit={handleSubmit}
+        className="px-5 pb-6 space-y-4 flex-1"
+      >
+        <Input
+          label="Business name"
+          placeholder="Mami Cresskill"
+          value={businessName}
+          onChange={(e) => setBusinessName(e.target.value)}
+          required
+        />
 
-          <Textarea
-            label="Description"
-            placeholder="What does your business do? What kind of content are you looking for?"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
+        <Textarea
+          label="What's the vibe?"
+          placeholder="Opened in March. Mom's still in the kitchen. Dinner-first Mediterranean spot with a soft spot for neighbors."
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows={3}
+        />
 
-          <Select
-            label="Category"
-            placeholder="Select a category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            options={OFFER_CATEGORIES.map((cat) => ({
-              value: cat,
-              label: cat,
-            }))}
-            required
-          />
+        <Select
+          label="Category"
+          placeholder="What kind of spot are you?"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          options={OFFER_CATEGORIES.map((cat) => ({
+            value: cat,
+            label: cat,
+          }))}
+          required
+        />
 
-          <Input
-            label="Address"
-            placeholder="123 Main St"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
+        <Input
+          label="Address"
+          placeholder="15 E Madison Ave"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
 
-          <Input
-            label="City"
-            placeholder="e.g. Hoboken, NJ"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            required
-          />
+        <Input
+          label="City"
+          placeholder="Cresskill, NJ"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          required
+        />
 
-          <Input
-            label="Website (optional)"
-            placeholder="https://yourbusiness.com"
-            type="url"
-            value={website}
-            onChange={(e) => setWebsite(e.target.value)}
-          />
+        <Input
+          label="Website (optional)"
+          placeholder="https://yourplace.com"
+          type="url"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
 
-          {error && (
-            <div className="rounded-xl bg-[color:var(--destructive-soft)] border border-[color:var(--destructive)]/20 px-4 py-3">
-              <p className="text-[13px] text-[color:var(--destructive)] text-center font-medium">
-                {error}
-              </p>
-            </div>
-          )}
+        {error && (
+          <div className="rounded-xl bg-[color:var(--destructive-soft)] border border-[color:var(--destructive)]/20 px-4 py-3">
+            <p className="text-[13px] text-[color:var(--destructive)] text-center font-medium">
+              {error}
+            </p>
+          </div>
+        )}
+      </form>
 
-          <Button type="submit" loading={loading} className="w-full" size="lg">
-            Complete Setup
-          </Button>
-        </form>
+      <div className="px-5 pb-10 pt-4 border-t border-[color:var(--line)]">
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          loading={loading}
+          variant="clay"
+          className="w-full"
+          size="lg"
+        >
+          Open the room
+        </Button>
+        <p className="mt-3 text-center font-mono text-[9.5px] font-bold tracking-[0.18em] uppercase text-[color:var(--ink-soft)]">
+          2 GUARANTEE CREDITS ON US
+        </p>
       </div>
     </div>
   );

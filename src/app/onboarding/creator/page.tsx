@@ -3,11 +3,17 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { Button, Input, Textarea, Select, KnotLogo } from "@/components/ui";
-import { OFFER_CATEGORIES, MIN_FOLLOWERS } from "@/lib/constants";
-import { Camera, CheckCircle } from "lucide-react";
+import { Button, Input, Textarea, Chip, KnotLogo } from "@/components/ui";
+import { OFFER_CATEGORIES } from "@/lib/constants";
 
 type Step = "profile" | "social" | "portfolio" | "review";
+
+const STEPS: { key: Step; label: string; title: string; kicker: string }[] = [
+  { key: "profile", label: "You", title: "Who are you?", kicker: "ABOUT YOU" },
+  { key: "social", label: "Where", title: "Where can we find you?", kicker: "YOUR WORK" },
+  { key: "portfolio", label: "Proof", title: "Show us three.", kicker: "PORTFOLIO" },
+  { key: "review", label: "Send", title: "Ready to submit?", kicker: "REVIEW" },
+];
 
 export default function CreatorOnboardingPage() {
   const [step, setStep] = useState<Step>("profile");
@@ -16,7 +22,6 @@ export default function CreatorOnboardingPage() {
   const router = useRouter();
   const supabase = createClient();
 
-  // Form data
   const [bio, setBio] = useState("");
   const [city, setCity] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
@@ -80,251 +85,171 @@ export default function CreatorOnboardingPage() {
     router.push("/c/explore");
   }
 
-  const steps: { key: Step; label: string }[] = [
-    { key: "profile", label: "Profile" },
-    { key: "social", label: "Social" },
-    { key: "portfolio", label: "Portfolio" },
-    { key: "review", label: "Review" },
-  ];
-
-  const currentIndex = steps.findIndex((s) => s.key === step);
+  const currentIndex = STEPS.findIndex((s) => s.key === step);
+  const current = STEPS[currentIndex];
 
   return (
-    <div className="min-h-dvh bg-background px-4 py-8">
-      <div className="mx-auto max-w-sm">
-        <div className="flex justify-center mb-8">
-          <KnotLogo size="md" />
-        </div>
+    <div className="min-h-dvh bg-[color:var(--cream)] flex flex-col">
+      {/* Top */}
+      <div className="flex items-center justify-between px-5 pt-14 pb-5">
+        <span className="font-mono text-[10px] font-bold tracking-[0.22em] text-[color:var(--ink-soft)]">
+          {currentIndex + 1} / {STEPS.length}
+        </span>
+        <KnotLogo variant="mark" size="sm" />
+      </div>
 
-        {/* Progress */}
-        <div className="flex items-center gap-2 mb-8">
-          {steps.map((s, i) => (
-            <div key={s.key} className="flex-1">
-              <div
-                className={`h-1 rounded-full transition-colors ${
-                  i <= currentIndex ? "bg-primary" : "bg-border"
-                }`}
-              />
-              <p
-                className={`text-xs mt-1 ${
-                  i <= currentIndex
-                    ? "text-foreground font-medium"
-                    : "text-muted-foreground"
-                }`}
-              >
-                {s.label}
-              </p>
-            </div>
+      {/* Progress bar */}
+      <div className="px-5 pb-6">
+        <div className="flex gap-1.5">
+          {STEPS.map((s, i) => (
+            <div
+              key={s.key}
+              className={`flex-1 h-[3px] rounded-full transition-all ${
+                i <= currentIndex
+                  ? "bg-[color:var(--sage-deep)]"
+                  : "bg-[color:var(--line)]"
+              }`}
+            />
           ))}
         </div>
+      </div>
 
+      {/* Title */}
+      <div className="px-5 mb-8">
+        <span className="font-mono text-[9.5px] font-bold tracking-[0.22em] text-[color:var(--sage-deep)]">
+          {current.kicker}
+        </span>
+        <h1 className="mt-2 font-serif italic text-[36px] font-normal leading-[1.02] tracking-[-0.02em] text-[color:var(--ink)]">
+          {current.title}
+        </h1>
+      </div>
+
+      {/* Steps */}
+      <div className="px-5 pb-8 flex-1">
         {step === "profile" && (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-serif font-semibold">
-                Tell us about yourself
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                This helps businesses find the right creator
-              </p>
-            </div>
-
+          <div className="space-y-5">
             <Textarea
-              label="Bio"
-              placeholder="Tell businesses what makes your content unique..."
+              label="Your voice, in a line or two"
+              placeholder="Food stylist with a soft spot for neighborhood kitchens."
               value={bio}
               onChange={(e) => setBio(e.target.value)}
+              rows={3}
             />
 
             <Input
-              label="City"
-              placeholder="e.g. Hoboken, NJ"
+              label="Where are you based?"
+              placeholder="Cresskill, NJ"
               value={city}
               onChange={(e) => setCity(e.target.value)}
             />
 
-            <div className="space-y-1.5">
-              <label className="block text-sm font-medium">
-                Content Categories
+            <div className="space-y-2.5">
+              <label className="block font-sans text-[11.5px] font-semibold tracking-[0.02em] text-[color:var(--ink-mid)]">
+                What do you cover?
               </label>
               <div className="flex flex-wrap gap-2">
                 {OFFER_CATEGORIES.map((cat) => (
-                  <button
+                  <Chip
                     key={cat}
-                    type="button"
+                    label={cat}
+                    active={categories.includes(cat)}
                     onClick={() => toggleCategory(cat)}
-                    className={`rounded-full px-3 py-1.5 text-sm transition-colors ${
-                      categories.includes(cat)
-                        ? "bg-primary text-white"
-                        : "bg-muted text-foreground hover:bg-muted/80"
-                    }`}
-                  >
-                    {cat}
-                  </button>
+                  />
                 ))}
               </div>
             </div>
-
-            <Button
-              onClick={() => setStep("social")}
-              className="w-full"
-              size="lg"
-            >
-              Continue
-            </Button>
           </div>
         )}
 
         {step === "social" && (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-serif font-semibold">
-                Your social presence
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                We use this to verify your profile (min {MIN_FOLLOWERS}{" "}
-                followers)
-              </p>
-            </div>
-
+          <div className="space-y-5">
             <Input
-              label="Instagram Handle"
-              placeholder="@yourhandle"
+              label="Instagram handle"
+              placeholder="@maya.makes"
               value={instagramHandle}
               onChange={(e) => setInstagramHandle(e.target.value)}
             />
 
             <Input
-              label="TikTok Handle (optional)"
+              label="TikTok handle (optional)"
               placeholder="@yourhandle"
               value={tiktokHandle}
               onChange={(e) => setTiktokHandle(e.target.value)}
             />
 
             <Input
-              label="Approximate Follower Count"
+              label="Roughly how many followers?"
               type="number"
-              placeholder="e.g. 5000"
+              placeholder="4300"
               value={followerCount}
               onChange={(e) => setFollowerCount(e.target.value)}
             />
 
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() => setStep("profile")}
-                className="flex-1"
-                size="lg"
-              >
-                Back
-              </Button>
-              <Button
-                onClick={() => setStep("portfolio")}
-                className="flex-1"
-                size="lg"
-              >
-                Continue
-              </Button>
-            </div>
+            <p className="font-serif italic text-[13px] leading-[1.5] text-[color:var(--ink-mid)]">
+              Don&apos;t stress the number. We care more about who you bring than
+              how many.
+            </p>
           </div>
         )}
 
         {step === "portfolio" && (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-serif font-semibold">
-                Show your best work
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                Share 3 links to your best content (Instagram posts, Reels, or
-                TikToks)
-              </p>
-            </div>
+          <div className="space-y-5">
+            <p className="font-serif italic text-[15px] leading-[1.5] text-[color:var(--ink-mid)] -mt-4">
+              Pick the three that look most like you.
+            </p>
 
             {portfolioUrls.map((url, i) => (
               <Input
                 key={i}
-                label={`Content Link ${i + 1}${i === 0 ? " (required)" : ""}`}
-                placeholder="https://instagram.com/p/..."
+                label={i === 0 ? "Link one" : i === 1 ? "Link two" : "Link three (optional)"}
+                placeholder="https://instagram.com/p/…"
                 value={url}
                 onChange={(e) => updatePortfolioUrl(i, e.target.value)}
                 required={i === 0}
               />
             ))}
-
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() => setStep("social")}
-                className="flex-1"
-                size="lg"
-              >
-                Back
-              </Button>
-              <Button
-                onClick={() => setStep("review")}
-                className="flex-1"
-                size="lg"
-              >
-                Continue
-              </Button>
-            </div>
           </div>
         )}
 
         {step === "review" && (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-serif font-semibold">
-                Almost there!
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                Review your profile before submitting
-              </p>
-            </div>
+          <div className="space-y-5">
+            <p className="font-serif italic text-[15px] leading-[1.55] text-[color:var(--ink-mid)] -mt-4">
+              One quick look before we send it over.
+            </p>
 
-            <div className="rounded-2xl bg-card border border-border/50 p-4 space-y-3">
-              <div>
-                <p className="text-xs text-muted-foreground">Bio</p>
-                <p className="text-sm">{bio || "Not provided"}</p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">City</p>
-                <p className="text-sm">{city || "Not provided"}</p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Categories</p>
-                <p className="text-sm">
-                  {categories.join(", ") || "None selected"}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Instagram</p>
-                <p className="text-sm">{instagramHandle || "Not provided"}</p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Followers</p>
-                <p className="text-sm">{followerCount || "Not provided"}</p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Portfolio</p>
-                <p className="text-sm">
-                  {portfolioUrls.filter(Boolean).length} links
-                </p>
-              </div>
-            </div>
-
-            <div className="rounded-2xl bg-primary/10 border border-primary/20 p-4">
-              <div className="flex items-start gap-3">
-                <Camera className="h-5 w-5 text-primary-hover mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-sm font-medium">Quality Review</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Your profile will be reviewed before you can access offers.
-                    This ensures the best experience for everyone.
+            <div className="rounded-[14px] bg-[color:var(--surface)] border border-[color:var(--line)] divide-y divide-[color:var(--line-soft)]">
+              {[
+                { label: "BIO", value: bio || "—" },
+                { label: "CITY", value: city || "—" },
+                { label: "CATEGORIES", value: categories.join(", ") || "—" },
+                { label: "INSTAGRAM", value: instagramHandle || "—" },
+                { label: "FOLLOWERS", value: followerCount || "—" },
+                {
+                  label: "PORTFOLIO",
+                  value: `${portfolioUrls.filter(Boolean).length} ${
+                    portfolioUrls.filter(Boolean).length === 1 ? "link" : "links"
+                  }`,
+                },
+              ].map((row) => (
+                <div key={row.label} className="px-4 py-3">
+                  <p className="font-mono text-[9px] font-bold tracking-[0.2em] uppercase text-[color:var(--ink-soft)]">
+                    {row.label}
+                  </p>
+                  <p className="mt-1 text-[13.5px] text-[color:var(--ink)] font-medium break-words">
+                    {row.value}
                   </p>
                 </div>
-              </div>
+              ))}
+            </div>
+
+            <div className="rounded-[14px] bg-[color:var(--sage-tint)] border border-[color:var(--sage-soft)] p-4">
+              <p className="font-mono text-[9px] font-bold tracking-[0.22em] text-[color:var(--sage-deep)]">
+                WHAT HAPPENS NEXT
+              </p>
+              <p className="mt-2 font-serif italic text-[14.5px] leading-[1.5] text-[color:var(--ink)]">
+                We review every creator before the first knot — usually within
+                24–48 hours. You&apos;ll get an email when you&apos;re in.
+              </p>
             </div>
 
             {error && (
@@ -334,26 +259,39 @@ export default function CreatorOnboardingPage() {
                 </p>
               </div>
             )}
-
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() => setStep("portfolio")}
-                className="flex-1"
-                size="lg"
-              >
-                Back
-              </Button>
-              <Button
-                onClick={handleSubmit}
-                loading={loading}
-                className="flex-1"
-                size="lg"
-              >
-                Submit Profile
-              </Button>
-            </div>
           </div>
+        )}
+      </div>
+
+      {/* CTA footer */}
+      <div className="px-5 pb-10 pt-4 flex gap-3 border-t border-[color:var(--line)] bg-[color:var(--cream)]">
+        {currentIndex > 0 && (
+          <Button
+            variant="outline"
+            onClick={() => setStep(STEPS[currentIndex - 1].key)}
+            className="flex-1"
+            size="lg"
+          >
+            Back
+          </Button>
+        )}
+        {step !== "review" ? (
+          <Button
+            onClick={() => setStep(STEPS[currentIndex + 1].key)}
+            className="flex-1"
+            size="lg"
+          >
+            Continue
+          </Button>
+        ) : (
+          <Button
+            onClick={handleSubmit}
+            loading={loading}
+            className="flex-1"
+            size="lg"
+          >
+            Submit
+          </Button>
         )}
       </div>
     </div>

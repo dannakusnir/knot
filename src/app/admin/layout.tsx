@@ -12,17 +12,17 @@ export default async function AdminLayout({
 
   return (
     <AdminShell>
-      <div className="min-h-dvh bg-background">
-        <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 bg-background/95 backdrop-blur-sm border-b border-border/50">
-          <div className="flex items-center gap-2">
-            <KnotLogo size="sm" />
-            <span className="text-xs font-medium bg-foreground text-background px-2 py-0.5 rounded">
+      <div className="min-h-dvh bg-[color:var(--cream)]">
+        <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-5 bg-[color:var(--cream)]/95 backdrop-blur-sm border-b border-[color:var(--line)]">
+          <div className="flex items-center gap-2.5">
+            <KnotLogo variant="mark" size="sm" />
+            <span className="font-mono text-[9px] font-bold tracking-[0.2em] uppercase bg-[color:var(--ink)] text-[color:var(--cream)] px-2 py-0.5 rounded-sm">
               Admin
             </span>
           </div>
         </header>
         <AdminNav />
-        <main className="px-4 py-6">{children}</main>
+        <main className="px-5 py-6">{children}</main>
       </div>
     </AdminShell>
   );

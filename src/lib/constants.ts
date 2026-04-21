@@ -1,37 +1,37 @@
 export const KNOT_STATUSES = {
-  connected: "Connected",
-  in_progress: "In Progress",
-  proof_submitted: "Proof Submitted",
-  revision_requested: "Revision Requested",
-  completed: "Completed",
+  connected: "Tied",
+  in_progress: "In motion",
+  proof_submitted: "Awaiting review",
+  revision_requested: "Revision",
+  completed: "Complete",
   cancelled: "Cancelled",
 } as const;
 
 export const APPLICATION_STATUSES = {
   pending: "Pending",
-  approved: "Connected",
-  declined: "Declined",
+  approved: "Tied",
+  declined: "Passed",
 } as const;
 
 export const OFFER_STATUSES = {
-  active: "Active",
+  active: "Open",
   paused: "Paused",
   closed: "Closed",
 } as const;
 
 export const CREATOR_APPROVAL_STATUSES = {
-  pending: "Under Review",
+  pending: "Under review",
   approved: "Approved",
-  rejected: "Rejected",
+  rejected: "Passed",
 } as const;
 
 export const ACTION_LABELS = {
-  apply: "Create Knot",
-  approve: "Connect",
-  decline: "Decline",
-  submit_proof: "Complete your Knot",
-  approve_proof: "Approve Knot",
-  request_revision: "Request Revision",
+  apply: "Apply for this knot",
+  approve: "Tie the knot",
+  decline: "Pass",
+  submit_proof: "Submit proof",
+  approve_proof: "Approve",
+  request_revision: "Ask for a revision",
 } as const;
 
 export const OFFER_CATEGORIES = [
